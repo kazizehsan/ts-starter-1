@@ -23,7 +23,7 @@ Resources:
     Properties:
       CodeUri: ./dist
       PackageType: Zip
-      Runtime: nodejs18.x
+      Runtime: nodejs20.x
       Handler: lambda.handler
       MemorySize: 1024
       Timeout: 30
@@ -34,7 +34,6 @@ Resources:
             ApiId: !Ref ExpressApi
       Environment:
         Variables:
-          NODE_OPTIONS: --experimental-modules --es-module-specifier-resolution=node
           NODE_ENV: production
           JWT_SECRET: "{{resolve:secretsmanager:ts_prac_3/prod/JWT:SecretString:secret}}"
           MONGODB_URL: "{{resolve:secretsmanager:ts_prac_3/prod/MONGODB_URL:SecretString:url}}"

@@ -3,10 +3,10 @@ import httpStatus from 'http-status';
 import httpMocks from 'node-mocks-http';
 import { jest } from '@jest/globals';
 import winston from 'winston';
-import { errorConverter, errorHandler } from './error';
-import ApiError from './ApiError';
-import config from '../../config/config';
-import logger from '../logger/logger';
+import { errorConverter, errorHandler } from './error.js';
+import ApiError from './ApiError.js';
+import config from '../../config/config.js';
+import logger from '../logger/logger.js';
 
 describe('Error middlewares', () => {
   describe('Error converter', () => {
