@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import 'source-map-support/register';
-import {configure as serverlessExpress} from '@codegenie/serverless-express';
+import { configure as serverlessExpress } from '@codegenie/serverless-express';
 import { Context, APIGatewayEvent, APIGatewayProxyCallback } from 'aws-lambda';
 import app from './app.js';
 import config from './config/config.js';
