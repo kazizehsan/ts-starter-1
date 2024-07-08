@@ -1,4 +1,4 @@
-import config from '../../config/config';
+import config from '../../config/config.js';
 
 const swaggerDefinition = {
   openapi: '3.0.0',

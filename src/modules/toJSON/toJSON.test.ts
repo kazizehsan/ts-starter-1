@@ -1,5 +1,5 @@
 import mongoose, { Model, Document } from 'mongoose';
-import { toJSON } from '.';
+import { toJSON } from './index.js';
 
 interface SampleSchema {
   public: string;

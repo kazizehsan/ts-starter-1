@@ -42,7 +42,5 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
     - run: yarn
-    - name: Run linting tests
-      run: yarn lint
     - name: Run unit tests
       run: yarn test

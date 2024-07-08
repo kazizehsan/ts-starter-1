@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
-import 'source-map-support/register';
-import serverlessExpress from '@codegenie/serverless-express';
+import { configure as serverlessExpress } from '@codegenie/serverless-express';
 import { Context, APIGatewayEvent, APIGatewayProxyCallback } from 'aws-lambda';
-import app from './app';
-import config from './config/config';
+import app from './app.js';
+import config from './config/config.js';
 
 export const handler = async (event: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback) => {
   await mongoose.connect(config.mongoose.url);

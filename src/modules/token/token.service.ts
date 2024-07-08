@@ -2,13 +2,13 @@ import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
-import config from '../../config/config';
-import Token from './token.model';
-import ApiError from '../errors/ApiError';
-import tokenTypes from './token.types';
-import { AccessAndRefreshTokens, ITokenDoc } from './token.interfaces';
-import { IUserDoc } from '../user/user.interfaces';
-import { userService } from '../user';
+import config from '../../config/config.js';
+import Token from './token.model.js';
+import ApiError from '../errors/ApiError.js';
+import tokenTypes from './token.types.js';
+import { AccessAndRefreshTokens, ITokenDoc } from './token.interfaces.js';
+import { IUserDoc } from '../user/user.interfaces.js';
+import { userService } from '../user/index.js';
 
 /**
  * Generate token
