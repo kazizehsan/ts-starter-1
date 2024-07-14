@@ -1,6 +1,6 @@
 # Typescript Server Boilerplate on AWS Lambda
 
-[![Node.js CI](https://github.com/kazizehsan/ts_prac_3/actions/workflows/node.js.yml/badge.svg)](https://github.com/kazizehsan/ts_prac_3/actions/workflows/node.js.yml)
+[![Node.js CI](https://github.com/kazizehsan/ts-starter-1/actions/workflows/node.js.yml/badge.svg)](https://github.com/kazizehsan/ts-starter-1/actions/workflows/node.js.yml)
 
 Production-ready Node.js v20 TypeScript app using MongoDB. Deployable to AWS Lambda using AWS SAM.
 
@@ -34,6 +34,7 @@ This project does not use experimental flags such as `--es-module-specifier-reso
 - **Santizing**: sanitize request data against xss and query injection
 - **CORS**: Cross-Origin Resource-Sharing enabled using [cors](https://github.com/expressjs/cors)
 - **Compression**: gzip compression with [compression](https://github.com/expressjs/compression)
+- **AWS Lambda**: IaC with AWS SAM
 - **CI**: continuous integration with [GitHub CI](https://travis-ci.org)
 - **Git hooks**: with [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
 - **Linting**: with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
@@ -78,8 +79,8 @@ Make sure you have MongoDB running on a cloud.
 
 Create AWS Secrets Manager secrets like so:
 
-* ts_prac_3/prod/JWT:secret
-* ts_prac_3/prod/MONGODB_URL:url
+* ts-starter-1/prod/JWT:secret
+* ts-starter-1/prod/MONGODB_URL:url
 
 Finally, run the following. **_Warning_**, this will create an S3 bucket and a CloudFormation Stack on your configured AWS account.
 ```bash

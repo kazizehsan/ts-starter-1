@@ -1,9 +1,9 @@
 {
-  "name": "ts-prac-3",
+  "name": "ts-starter-1",
   "version": "1.0.0",
-  "description": "AWS Lambda Express.js TypeScript boilerplate",
+  "description": "TypeScript Express.js backend boilerplate (starter) on AWS Lambda",
   "main": "dist/index.js",
-  "repository": "https://github.com/kazizehsan/ts_prac_3.git",
+  "repository": "https://github.com/kazizehsan/ts-starter-1.git",
   "author": "Kazi Ehsan Aziz <kazizehsan@gmail.com>",
   "license": "MIT",
   "type": "module",
@@ -36,8 +36,14 @@
     "node",
     "typescript",
     "node.js",
+    "backend",
     "boilerplate",
+    "starter",
+    "template",
     "express",
+    "express.js",
+    "aws",
+    "lambda",
     "rest",
     "api",
     "mongodb",
@@ -123,8 +129,8 @@
     "commitizen": {
       "path": "./node_modules/@ryansonshine/cz-conventional-changelog"
     },
-    "s3BucketName": "ts-prac-3",
+    "s3BucketName": "ts-starter-1",
     "region": "ap-south-1",
-    "cloudFormationStackName": "TSPrac3Stack"
+    "cloudFormationStackName": "TSStarter1Stack"
   }
 }

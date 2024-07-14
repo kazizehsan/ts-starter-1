@@ -35,8 +35,8 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: production
-          JWT_SECRET: "{{resolve:secretsmanager:ts_prac_3/prod/JWT:SecretString:secret}}"
-          MONGODB_URL: "{{resolve:secretsmanager:ts_prac_3/prod/MONGODB_URL:SecretString:url}}"
+          JWT_SECRET: "{{resolve:secretsmanager:ts-starter-1/prod/JWT:SecretString:secret}}"
+          MONGODB_URL: "{{resolve:secretsmanager:ts-starter-1/prod/MONGODB_URL:SecretString:url}}"
 
   MyApiCertificate:
     Type: 'AWS::CertificateManager::Certificate'

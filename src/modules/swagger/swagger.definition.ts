@@ -3,12 +3,12 @@ import config from '../../config/config.js';
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
-    title: 'ts-prac-3 API documentation',
+    title: 'ts-starter-1 API documentation',
     version: '0.0.1',
     description: 'This is a node express mongoose boilerplate in typescript',
     license: {
       name: 'MIT',
-      url: 'https://github.com/kazizehsan/ts_prac_3.git',
+      url: 'https://github.com/kazizehsan/ts-starter-1.git',
     },
   },
   servers: [
