@@ -1,8 +1,11 @@
 {
-  "name": "ts-starter-1",
+  "name": "@kazize/create-ts-starter-1",
   "version": "1.0.0",
-  "description": "TypeScript Express.js backend boilerplate (starter) on AWS Lambda",
-  "main": "dist/index.js",
+  "description": "TypeScript Express.js backend boilerplate on AWS Lambda",
+  "bin": "bin/createStarter.js",
+  "files": [
+    "bin/"
+  ],
   "repository": "https://github.com/kazizehsan/ts-starter-1.git",
   "author": "Kazi Ehsan Aziz <kazizehsan@gmail.com>",
   "license": "MIT",
@@ -33,6 +36,7 @@
     "commit": "git add -A && cz"
   },
   "keywords": [
+    "create-ts-starter-1",
     "node",
     "typescript",
     "node.js",
