@@ -114,6 +114,7 @@
     "express-rate-limit": "^5.5.1",
     "helmet": "^4.6.0",
     "http-status": "^1.5.0",
+    "inquirer": "^10.2.2",
     "joi": "^17.5.0",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",

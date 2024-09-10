@@ -42,12 +42,22 @@ This project does not use experimental flags such as `--es-module-specifier-reso
 - **Structured Commit Messages**: with [Commitizen](https://github.com/commitizen/cz-cli)
 - **Commit Linting**: with [CommitLint](https://github.com/conventional-changelog/commitlint)
 
-## Local development
+## Quick start
+
+To clone this project, run:
+```
+npx @kazize/create-ts-starter-1
+```
+Or,
+```
+npm init @kazize/ts-starter-1
+```
+
+## Manual Installation
 
 Clone the repo.
 
 Install the dependencies:
-
 ```bash
 yarn install
 ```
@@ -56,9 +66,8 @@ Set the environment variables:
 
 ```bash
 cp .env.example .env
-
-# open .env and modify the environment variables (if needed)
 ```
+Open .env and modify the environment variables (if needed).
 
 Make sure you have MongoDB running. Then:
 ```bash
@@ -81,6 +90,8 @@ Create AWS Secrets Manager secrets like so:
 
 * ts-starter-1/prod/JWT:secret
 * ts-starter-1/prod/MONGODB_URL:url
+
+If you change the prefix in the secrets above from `ts-starter-1` to something else, then update `sam-template.yaml` as well.
 
 Finally, run the following. **_Warning_**, this will create an S3 bucket and a CloudFormation Stack on your configured AWS account.
 ```bash
