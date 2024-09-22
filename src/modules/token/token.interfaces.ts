@@ -1,5 +1,6 @@
 
 export interface ITokenBaseModel {
+  id?: any;
   token: string;
   user: string;
   type: string;
@@ -7,11 +8,7 @@ export interface ITokenBaseModel {
   blacklisted: boolean;
 }
 
-export interface ITokenHLModel extends ITokenBaseModel {
-  id?: any;
-}
-
-export type NewToken = Omit<ITokenBaseModel, 'blacklisted'>;
+export interface NewToken extends Omit<ITokenBaseModel, 'id' | 'blacklisted'> {};
 
 export interface TokenPayload {
   token: string;

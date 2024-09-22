@@ -3,11 +3,11 @@ import passport from 'passport';
 import httpStatus from 'http-status';
 import ApiError from '../errors/ApiError.js';
 import { roleRights } from '../../config/roles.js';
-import { IUserHLModel } from '../user/user.interfaces.js';
+import { IUserBaseModel } from '../user/user.interfaces.js';
 
 const verifyCallback =
   (req: Request, resolve: any, reject: any, requiredRights: string[]) =>
-  async (err: Error, user: IUserHLModel, info: string) => {
+  async (err: Error, user: IUserBaseModel, info: string) => {
     if (err || info || !user) {
       return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
     }

@@ -5,16 +5,16 @@ import tokenTypes from '../token/token.types.js';
 import { getUserByEmail, getUserById, updateUserById } from '../user/user.service.js';
 import { generateAuthTokens, verifyToken } from '../token/token.service.js';
 import { IUserWithTokens } from './auth.interfaces.js';
-import { IUserHLModel } from '../user/user.interfaces.js';
+import { IUserBaseModel } from '../user/user.interfaces.js';
 import { IUserDoc } from '../user/user.model.js';
 
 /**
  * Login with username and password
  * @param {string} email
  * @param {string} password
- * @returns {Promise<IUserHLModel>}
+ * @returns {Promise<IUserBaseModel>}
  */
-export const loginUserWithEmailAndPassword = async (email: string, password: string): Promise<IUserHLModel> => {
+export const loginUserWithEmailAndPassword = async (email: string, password: string): Promise<IUserBaseModel> => {
   const user = (await getUserByEmail(email)) as IUserDoc;
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
@@ -78,9 +78,9 @@ export const resetPassword = async (resetPasswordToken: any, newPassword: string
 /**
  * Verify email
  * @param {string} verifyEmailToken
- * @returns {Promise<IUserHLModel | null>}
+ * @returns {Promise<IUserBaseModel | null>}
  */
-export const verifyEmail = async (verifyEmailToken: any): Promise<IUserHLModel | null> => {
+export const verifyEmail = async (verifyEmailToken: any): Promise<IUserBaseModel | null> => {
   try {
     const verifyEmailTokenDoc = await verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
     const user = await getUserById(verifyEmailTokenDoc.user);

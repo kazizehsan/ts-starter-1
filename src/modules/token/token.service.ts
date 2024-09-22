@@ -5,9 +5,9 @@ import config from '../../config/config.js';
 import Token from './token.model.js';
 import ApiError from '../errors/ApiError.js';
 import tokenTypes from './token.types.js';
-import { AccessAndRefreshTokens, ITokenHLModel } from './token.interfaces.js';
+import { AccessAndRefreshTokens, ITokenBaseModel } from './token.interfaces.js';
 import { userService } from '../user/index.js';
-import { IUserHLModel } from '../user/user.interfaces.js';
+import { IUserBaseModel } from '../user/user.interfaces.js';
 import { IPayload } from '../auth/passport.js';
 
 /**
@@ -35,7 +35,7 @@ export const generateToken = (userId: string, expires: Moment, type: string, sec
  * @param {Moment} expires
  * @param {string} type
  * @param {boolean} [blacklisted]
- * @returns {Promise<ITokenHLModel>}
+ * @returns {Promise<ITokenBaseModel>}
  */
 export const saveToken = async (
   token: string,
@@ -43,7 +43,7 @@ export const saveToken = async (
   expires: Moment,
   type: string,
   blacklisted: boolean = false
-): Promise<ITokenHLModel> => {
+): Promise<ITokenBaseModel> => {
   const tokenDoc = await Token.create({
     token,
     user: userId,
@@ -58,9 +58,9 @@ export const saveToken = async (
  * Verify token and return token doc (or throw an error if it is not valid)
  * @param {string} token
  * @param {string} type
- * @returns {Promise<ITokenHLModel>}
+ * @returns {Promise<ITokenBaseModel>}
  */
-export const verifyToken = async (token: string, type: string): Promise<ITokenHLModel> => {
+export const verifyToken = async (token: string, type: string): Promise<ITokenBaseModel> => {
   const payload = jwt.verify(token, config.jwt.secret);
   if (typeof payload.sub !== 'string') {
     throw new ApiError(httpStatus.BAD_REQUEST, 'bad user');
@@ -79,10 +79,10 @@ export const verifyToken = async (token: string, type: string): Promise<ITokenHL
 
 /**
  * Generate auth tokens
- * @param {IUserHLModel} user
+ * @param {IUserBaseModel} user
  * @returns {Promise<AccessAndRefreshTokens>}
  */
-export const generateAuthTokens = async (user: IUserHLModel): Promise<AccessAndRefreshTokens> => {
+export const generateAuthTokens = async (user: IUserBaseModel): Promise<AccessAndRefreshTokens> => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
@@ -120,10 +120,10 @@ export const generateResetPasswordToken = async (email: string): Promise<string>
 
 /**
  * Generate verify email token
- * @param {IUserHLModel} user
+ * @param {IUserBaseModel} user
  * @returns {Promise<string>}
  */
-export const generateVerifyEmailToken = async (user: IUserHLModel): Promise<string> => {
+export const generateVerifyEmailToken = async (user: IUserBaseModel): Promise<string> => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);

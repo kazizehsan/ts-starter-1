@@ -3,6 +3,7 @@
  */
 
 export interface IUserBaseModel {
+  id?: any;
   name: string;
   email: string;
   password: string;
@@ -10,12 +11,8 @@ export interface IUserBaseModel {
   isEmailVerified: boolean;
 }
 
-export interface IUserHLModel extends IUserBaseModel {
-  id?: any;
-}
+export interface UpdateUserBody extends Partial<Omit<IUserBaseModel, 'id'>> {};
 
-export type UpdateUserBody = Partial<IUserBaseModel>;
+export interface NewRegisteredUser extends Omit<IUserBaseModel, 'id' | 'role' | 'isEmailVerified'> {};
 
-export type NewRegisteredUser = Omit<IUserBaseModel, 'role' | 'isEmailVerified'>;
-
-export type NewCreatedUser = Omit<IUserBaseModel, 'isEmailVerified'>;
+export interface NewCreatedUser extends Omit<IUserBaseModel, 'id' | 'isEmailVerified'> {};
