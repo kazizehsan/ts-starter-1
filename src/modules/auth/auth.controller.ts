@@ -5,6 +5,20 @@ import { tokenService } from '../token/index.js';
 import { userService } from '../user/index.js';
 import * as authService from './auth.service.js';
 import { emailService } from '../email/index.js';
+import { Body, Controller, Post, Route, SuccessResponse } from 'tsoa';
+import { NewRegisteredUser } from '../user/user.interfaces.js';
+import { IUserWithTokens } from './auth.interfaces.js';
+
+@Route('v1/auth')
+export class AuthController extends Controller {
+  @SuccessResponse("201", "Created")
+  @Post('register')
+  public async register(@Body() requestBody: NewRegisteredUser): Promise<IUserWithTokens> {
+    const user = await userService.registerUser(requestBody);
+    const tokens = await tokenService.generateAuthTokens(user);
+    return { user, tokens };
+  }
+}
 
 export const register = catchAsync(async (req: Request, res: Response) => {
   const user = await userService.registerUser(req.body);

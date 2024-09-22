@@ -1,0 +1,166 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"IUserHLModel": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					},
+					"isEmailVerified": {
+						"type": "boolean"
+					},
+					"id": {}
+				},
+				"required": [
+					"name",
+					"email",
+					"password",
+					"role",
+					"isEmailVerified"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TokenPayload": {
+				"properties": {
+					"token": {
+						"type": "string"
+					},
+					"expires": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"token",
+					"expires"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AccessAndRefreshTokens": {
+				"properties": {
+					"access": {
+						"$ref": "#/components/schemas/TokenPayload"
+					},
+					"refresh": {
+						"$ref": "#/components/schemas/TokenPayload"
+					}
+				},
+				"required": [
+					"access",
+					"refresh"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserWithTokens": {
+				"properties": {
+					"user": {
+						"$ref": "#/components/schemas/IUserHLModel"
+					},
+					"tokens": {
+						"$ref": "#/components/schemas/AccessAndRefreshTokens"
+					}
+				},
+				"required": [
+					"user",
+					"tokens"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_IUserBaseModel.Exclude_keyofIUserBaseModel.role-or-isEmailVerified__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"password"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_IUserBaseModel.role-or-isEmailVerified_": {
+				"$ref": "#/components/schemas/Pick_IUserBaseModel.Exclude_keyofIUserBaseModel.role-or-isEmailVerified__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"NewRegisteredUser": {
+				"$ref": "#/components/schemas/Omit_IUserBaseModel.role-or-isEmailVerified_"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "@kazize/create-ts-starter-1",
+		"version": "1.0.1",
+		"description": "TypeScript Express.js backend boilerplate on AWS Lambda",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "Kazi Ehsan Aziz ",
+			"email": "kazizehsan@gmail.com"
+		}
+	},
+	"paths": {
+		"/v1/auth/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserWithTokens"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NewRegisteredUser"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

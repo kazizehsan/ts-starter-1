@@ -1,19 +1,13 @@
 import express from 'express';
-import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDefinition from '../../modules/swagger/swagger.definition.js';
+import swaggerJSON from '../../specs/swagger.json' assert { type: "json" };
 
 const router = express.Router();
-
-const specs = swaggerJsdoc({
-  swaggerDefinition,
-  apis: ['packages/components.yaml', 'dist/routes/v1/*.js'],
-});
 
 router.use('/', swaggerUi.serve);
 router.get(
   '/',
-  swaggerUi.setup(specs, {
+  swaggerUi.setup(swaggerJSON, {
     explorer: true,
   })
 );
