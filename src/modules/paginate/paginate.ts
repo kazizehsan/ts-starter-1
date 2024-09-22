@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { Schema, Document, Model } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
-export interface QueryResult {
-  results: Document[];
+export interface QueryResult<T> {
+  results: T[];
   page: number;
   limit: number;
   totalPages: number;
@@ -17,7 +17,7 @@ export interface IOptions {
   page?: number;
 }
 
-const paginate = <T extends Document, U extends Model<U>>(schema: Schema<T>): void => {
+const paginate = <T extends Document>(schema: Schema<T>): void => {
   /**
    * @typedef {Object} QueryResult
    * @property {Document[]} results - Results found
@@ -37,7 +37,7 @@ const paginate = <T extends Document, U extends Model<U>>(schema: Schema<T>): vo
    * @param {string} [options.projectBy] - Fields to hide or include (default = '')
    * @returns {Promise<QueryResult>}
    */
-  schema.static('paginate', async function (filter: Record<string, any>, options: IOptions): Promise<QueryResult> {
+  schema.static('paginate', async function (filter: Record<string, any>, options: IOptions): Promise<QueryResult<T>> {
     let sort: string = '';
     if (options.sortBy) {
       const sortingCriteria: any = [];

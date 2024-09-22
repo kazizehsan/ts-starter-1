@@ -1,8 +1,8 @@
-import mongoose, { Model, Document } from 'mongoose';
-import { QueryResult } from '../paginate/paginate.js';
-import { AccessAndRefreshTokens } from '../token/token.interfaces.js';
+/*
+ * This file should not contain low level implementation.
+ */
 
-export interface IUser {
+export interface IUserBaseModel {
   name: string;
   email: string;
   password: string;
@@ -10,22 +10,12 @@ export interface IUser {
   isEmailVerified: boolean;
 }
 
-export interface IUserDoc extends IUser, Document {
-  isPasswordMatch(password: string): Promise<boolean>;
+export interface IUserHLModel extends IUserBaseModel {
+  id?: any;
 }
 
-export interface IUserModel extends Model<IUserDoc> {
-  isEmailTaken(email: string, excludeUserId?: mongoose.Types.ObjectId): Promise<boolean>;
-  paginate(filter: Record<string, any>, options: Record<string, any>): Promise<QueryResult>;
-}
+export type UpdateUserBody = Partial<IUserBaseModel>;
 
-export type UpdateUserBody = Partial<IUser>;
+export type NewRegisteredUser = Omit<IUserBaseModel, 'role' | 'isEmailVerified'>;
 
-export type NewRegisteredUser = Omit<IUser, 'role' | 'isEmailVerified'>;
-
-export type NewCreatedUser = Omit<IUser, 'isEmailVerified'>;
-
-export interface IUserWithTokens {
-  user: IUserDoc;
-  tokens: AccessAndRefreshTokens;
-}
+export type NewCreatedUser = Omit<IUserBaseModel, 'isEmailVerified'>;

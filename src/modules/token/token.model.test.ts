@@ -19,7 +19,7 @@ const userOne = {
   isEmailVerified: false,
 };
 
-const userOneAccessToken = tokenService.generateToken(userOne._id, accessTokenExpires, tokenTypes.ACCESS);
+const userOneAccessToken = tokenService.generateToken(userOne._id.toString(), accessTokenExpires, tokenTypes.ACCESS);
 
 describe('Token Model', () => {
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');

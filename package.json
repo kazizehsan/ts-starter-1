@@ -126,6 +126,7 @@
     "pm2": "^5.1.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.2.0",
+    "tsoa": "^6.4.0",
     "validator": "^13.7.0",
     "winston": "^3.3.3",
     "xss-clean": "^0.1.1"

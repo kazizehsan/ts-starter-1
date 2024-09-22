@@ -1,30 +1,25 @@
 import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
-import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import config from '../../config/config.js';
 import Token from './token.model.js';
 import ApiError from '../errors/ApiError.js';
 import tokenTypes from './token.types.js';
-import { AccessAndRefreshTokens, ITokenDoc } from './token.interfaces.js';
-import { IUserDoc } from '../user/user.interfaces.js';
+import { AccessAndRefreshTokens, ITokenHLModel } from './token.interfaces.js';
 import { userService } from '../user/index.js';
+import { IUserHLModel } from '../user/user.interfaces.js';
+import { IPayload } from '../auth/passport.js';
 
 /**
  * Generate token
- * @param {mongoose.Types.ObjectId} userId
+ * @param {string} userId
  * @param {Moment} expires
  * @param {string} type
  * @param {string} [secret]
  * @returns {string}
  */
-export const generateToken = (
-  userId: mongoose.Types.ObjectId,
-  expires: Moment,
-  type: string,
-  secret: string = config.jwt.secret
-): string => {
-  const payload = {
+export const generateToken = (userId: string, expires: Moment, type: string, secret: string = config.jwt.secret): string => {
+  const payload: IPayload = {
     sub: userId,
     iat: moment().unix(),
     exp: expires.unix(),
@@ -36,19 +31,19 @@ export const generateToken = (
 /**
  * Save a token
  * @param {string} token
- * @param {mongoose.Types.ObjectId} userId
+ * @param {string} userId
  * @param {Moment} expires
  * @param {string} type
  * @param {boolean} [blacklisted]
- * @returns {Promise<ITokenDoc>}
+ * @returns {Promise<ITokenHLModel>}
  */
 export const saveToken = async (
   token: string,
-  userId: mongoose.Types.ObjectId,
+  userId: string,
   expires: Moment,
   type: string,
   blacklisted: boolean = false
-): Promise<ITokenDoc> => {
+): Promise<ITokenHLModel> => {
   const tokenDoc = await Token.create({
     token,
     user: userId,
@@ -63,9 +58,9 @@ export const saveToken = async (
  * Verify token and return token doc (or throw an error if it is not valid)
  * @param {string} token
  * @param {string} type
- * @returns {Promise<ITokenDoc>}
+ * @returns {Promise<ITokenHLModel>}
  */
-export const verifyToken = async (token: string, type: string): Promise<ITokenDoc> => {
+export const verifyToken = async (token: string, type: string): Promise<ITokenHLModel> => {
   const payload = jwt.verify(token, config.jwt.secret);
   if (typeof payload.sub !== 'string') {
     throw new ApiError(httpStatus.BAD_REQUEST, 'bad user');
@@ -84,10 +79,10 @@ export const verifyToken = async (token: string, type: string): Promise<ITokenDo
 
 /**
  * Generate auth tokens
- * @param {IUserDoc} user
+ * @param {IUserHLModel} user
  * @returns {Promise<AccessAndRefreshTokens>}
  */
-export const generateAuthTokens = async (user: IUserDoc): Promise<AccessAndRefreshTokens> => {
+export const generateAuthTokens = async (user: IUserHLModel): Promise<AccessAndRefreshTokens> => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
@@ -125,10 +120,10 @@ export const generateResetPasswordToken = async (email: string): Promise<string>
 
 /**
  * Generate verify email token
- * @param {IUserDoc} user
+ * @param {IUserHLModel} user
  * @returns {Promise<string>}
  */
-export const generateVerifyEmailToken = async (user: IUserDoc): Promise<string> => {
+export const generateVerifyEmailToken = async (user: IUserHLModel): Promise<string> => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);

@@ -3,72 +3,69 @@ import mongoose from 'mongoose';
 import User from './user.model.js';
 import ApiError from '../errors/ApiError.js';
 import { IOptions, QueryResult } from '../paginate/paginate.js';
-import { NewCreatedUser, UpdateUserBody, IUserDoc, NewRegisteredUser } from './user.interfaces.js';
+import { NewCreatedUser, UpdateUserBody, NewRegisteredUser, IUserHLModel } from './user.interfaces.js';
 
 /**
  * Create a user
  * @param {NewCreatedUser} userBody
- * @returns {Promise<IUserDoc>}
+ * @returns {Promise<IUserHLModel>}
  */
-export const createUser = async (userBody: NewCreatedUser): Promise<IUserDoc> => {
+export const createUser = async (userBody: NewCreatedUser): Promise<IUserHLModel> => {
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  return User.create(userBody);
+  return await User.create(userBody);
 };
 
 /**
  * Register a user
  * @param {NewRegisteredUser} userBody
- * @returns {Promise<IUserDoc>}
+ * @returns {Promise<IUserHLModel>}
  */
-export const registerUser = async (userBody: NewRegisteredUser): Promise<IUserDoc> => {
+export const registerUser = async (userBody: NewRegisteredUser): Promise<IUserHLModel> => {
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  return User.create(userBody);
+  return await User.create(userBody);
 };
 
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
  * @param {Object} options - Query options
- * @returns {Promise<QueryResult>}
+ * @returns {Promise<QueryResult<IUserHLModel>>}
  */
-export const queryUsers = async (filter: Record<string, any>, options: IOptions): Promise<QueryResult> => {
+export const queryUsers = async (filter: Record<string, any>, options: IOptions): Promise<QueryResult<IUserHLModel>> => {
   const users = await User.paginate(filter, options);
   return users;
 };
 
 /**
  * Get user by id
- * @param {mongoose.Types.ObjectId} id
- * @returns {Promise<IUserDoc | null>}
+ * @param {string} id
+ * @returns {Promise<IUserHLModel | null>}
  */
-export const getUserById = async (id: mongoose.Types.ObjectId): Promise<IUserDoc | null> => User.findById(id);
+export const getUserById = async (id: string): Promise<IUserHLModel | null> => User.findById(id);
 
 /**
  * Get user by email
  * @param {string} email
- * @returns {Promise<IUserDoc | null>}
+ * @returns {Promise<IUserHLModel | null>}
  */
-export const getUserByEmail = async (email: string): Promise<IUserDoc | null> => User.findOne({ email });
+export const getUserByEmail = async (email: string): Promise<IUserHLModel | null> => User.findOne({ email });
 
 /**
  * Update user by id
- * @param {mongoose.Types.ObjectId} userId
+ * @param {string} userId
  * @param {UpdateUserBody} updateBody
- * @returns {Promise<IUserDoc | null>}
+ * @returns {Promise<IUserHLModel | null>}
  */
-export const updateUserById = async (
-  userId: mongoose.Types.ObjectId,
-  updateBody: UpdateUserBody
-): Promise<IUserDoc | null> => {
-  const user = await getUserById(userId);
+export const updateUserById = async (userId: string, updateBody: UpdateUserBody): Promise<IUserHLModel | null> => {
+  const user = await User.findById(userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
+  if (updateBody.email && (await User.isEmailTaken(updateBody.email, new mongoose.Types.ObjectId(userId)))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
   Object.assign(user, updateBody);
@@ -78,11 +75,11 @@ export const updateUserById = async (
 
 /**
  * Delete user by id
- * @param {mongoose.Types.ObjectId} userId
- * @returns {Promise<IUserDoc | null>}
+ * @param {string} userId
+ * @returns {Promise<IUserHLModel | null>}
  */
-export const deleteUserById = async (userId: mongoose.Types.ObjectId): Promise<IUserDoc | null> => {
-  const user = await getUserById(userId);
+export const deleteUserById = async (userId: string): Promise<IUserHLModel | null> => {
+  const user = await User.findById(userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }

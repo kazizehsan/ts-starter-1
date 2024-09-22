@@ -46,8 +46,8 @@ const admin = {
   isEmailVerified: false,
 };
 
-const userOneAccessToken = tokenService.generateToken(userOne._id, accessTokenExpires, tokenTypes.ACCESS);
-const adminAccessToken = tokenService.generateToken(admin._id, accessTokenExpires, tokenTypes.ACCESS);
+const userOneAccessToken = tokenService.generateToken(userOne._id.toString(), accessTokenExpires, tokenTypes.ACCESS);
+const adminAccessToken = tokenService.generateToken(admin._id.toString(), accessTokenExpires, tokenTypes.ACCESS);
 
 const insertUsers = async (users: Record<string, any>[]) => {
   await User.insertMany(users.map((user) => ({ ...user, password: hashedPassword })));

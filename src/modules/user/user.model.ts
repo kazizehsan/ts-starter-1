@@ -1,10 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import toJSON from '../toJSON/toJSON.js';
-import paginate from '../paginate/paginate.js';
+import paginate, { QueryResult } from '../paginate/paginate.js';
 import { roles } from '../../config/roles.js';
-import { IUserDoc, IUserModel } from './user.interfaces.js';
+import { IUserBaseModel } from './user.interfaces.js';
+
+export interface IUserDoc extends IUserBaseModel, Document {
+  isPasswordMatch(password: string): Promise<boolean>;
+}
+
+export interface IUserModel extends Model<IUserDoc> {
+  isEmailTaken(email: string, excludeUserId?: mongoose.Types.ObjectId): Promise<boolean>;
+  paginate(filter: Record<string, any>, options: Record<string, any>): Promise<QueryResult<IUserDoc>>;
+}
 
 const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
   {

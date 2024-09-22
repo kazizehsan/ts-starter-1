@@ -1,20 +1,21 @@
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
-import Token from '../token/token.model.js';
+import Token, { ITokenDoc } from '../token/token.model.js';
 import ApiError from '../errors/ApiError.js';
 import tokenTypes from '../token/token.types.js';
 import { getUserByEmail, getUserById, updateUserById } from '../user/user.service.js';
-import { IUserDoc, IUserWithTokens } from '../user/user.interfaces.js';
 import { generateAuthTokens, verifyToken } from '../token/token.service.js';
+import { IUserWithTokens } from './auth.interfaces.js';
+import { IUserHLModel } from '../user/user.interfaces.js';
+import { IUserDoc } from '../user/user.model.js';
 
 /**
  * Login with username and password
  * @param {string} email
  * @param {string} password
- * @returns {Promise<IUserDoc>}
+ * @returns {Promise<IUserHLModel>}
  */
-export const loginUserWithEmailAndPassword = async (email: string, password: string): Promise<IUserDoc> => {
-  const user = await getUserByEmail(email);
+export const loginUserWithEmailAndPassword = async (email: string, password: string): Promise<IUserHLModel> => {
+  const user = (await getUserByEmail(email)) as IUserDoc;
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
@@ -41,8 +42,8 @@ export const logout = async (refreshToken: string): Promise<void> => {
  */
 export const refreshAuth = async (refreshToken: string): Promise<IUserWithTokens> => {
   try {
-    const refreshTokenDoc = await verifyToken(refreshToken, tokenTypes.REFRESH);
-    const user = await getUserById(new mongoose.Types.ObjectId(refreshTokenDoc.user));
+    const refreshTokenDoc = (await verifyToken(refreshToken, tokenTypes.REFRESH)) as ITokenDoc;
+    const user = await getUserById(refreshTokenDoc.user);
     if (!user) {
       throw new Error();
     }
@@ -63,7 +64,7 @@ export const refreshAuth = async (refreshToken: string): Promise<IUserWithTokens
 export const resetPassword = async (resetPasswordToken: any, newPassword: string): Promise<void> => {
   try {
     const resetPasswordTokenDoc = await verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-    const user = await getUserById(new mongoose.Types.ObjectId(resetPasswordTokenDoc.user));
+    const user = await getUserById(resetPasswordTokenDoc.user);
     if (!user) {
       throw new Error();
     }
@@ -77,12 +78,12 @@ export const resetPassword = async (resetPasswordToken: any, newPassword: string
 /**
  * Verify email
  * @param {string} verifyEmailToken
- * @returns {Promise<IUserDoc | null>}
+ * @returns {Promise<IUserHLModel | null>}
  */
-export const verifyEmail = async (verifyEmailToken: any): Promise<IUserDoc | null> => {
+export const verifyEmail = async (verifyEmailToken: any): Promise<IUserHLModel | null> => {
   try {
     const verifyEmailTokenDoc = await verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
-    const user = await getUserById(new mongoose.Types.ObjectId(verifyEmailTokenDoc.user));
+    const user = await getUserById(verifyEmailTokenDoc.user);
     if (!user) {
       throw new Error();
     }
