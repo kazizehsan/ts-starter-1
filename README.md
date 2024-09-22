@@ -18,7 +18,7 @@ This project does not use experimental flags such as `--es-module-specifier-reso
 
 ## Features
 
-- **ES2020**: transpiles to ES2020 modules
+- **ES2022**: transpiles to ES2022 modules
 - **Static Typing**: [TypeScript](https://www.typescriptlang.org/) static typing using typescript
 - **Hot Reloading**: [Concurrently](https://github.com/open-cli-tools/concurrently) Hot realoding with concurrently
 - **NoSQL database**: [MongoDB](https://www.mongodb.com) object data modeling using [Mongoose](https://mongoosejs.com)

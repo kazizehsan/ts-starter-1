@@ -85,6 +85,26 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IApiError": {
+				"properties": {
+					"code": {
+						"type": "number",
+						"format": "double"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"code",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Pick_IUserBaseModel.Exclude_keyofIUserBaseModel.id-or-role-or-isEmailVerified__": {
 				"properties": {
 					"name": {
@@ -151,6 +171,32 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IUserWithTokens"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation Failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}
