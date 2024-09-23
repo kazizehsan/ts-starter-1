@@ -5,7 +5,7 @@ import ApiError from '../errors/ApiError.js';
 import pick from '../utils/pick.js';
 import { IOptions } from '../paginate/paginate.js';
 import * as userService from './user.service.js';
-import { Controller, Get, Middlewares, Request, Response, Route, SuccessResponse } from 'tsoa';
+import { Controller, Get, Middlewares, Request, Response, Route, Security, SuccessResponse } from 'tsoa';
 import { IApiError } from '../errors/error.js';
 import auth from './../auth/auth.middleware.js';
 import { IUserBaseModel } from './user.interfaces.js';
@@ -16,7 +16,8 @@ export class UserController extends Controller {
   @Response<IApiError>(401, 'Unauthorized')
   @SuccessResponse('200', 'Success')
   @Get('me')
-  @Middlewares(auth())
+  @Middlewares(auth()) // actually handles auth
+  @Security('jwt') // just adds auth specs to openapi
   public async getMe(@Request() req: ExpRequest): Promise<IUserBaseModel> {
     const user = await userService.getUserById(req.user.id);
     if (!user) {
@@ -29,7 +30,8 @@ export class UserController extends Controller {
   @Response<IApiError>(403, 'Forbidden')
   @SuccessResponse('200', 'Success')
   @Get('{userId}')
-  @Middlewares(auth(PERMISSIONS.getUsers))
+  @Middlewares(auth(PERMISSIONS.getUsers)) // actually handles auth
+  @Security('jwt') // just adds auth specs to openapi
   public async getUser(userId: string): Promise<IUserBaseModel> {
     const user = await userService.getUserById(userId);
     if (!user) {

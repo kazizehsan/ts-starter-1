@@ -1,13 +1,21 @@
 {
-    "entryFile": "src/index.ts",
-    "noImplicitAdditionalProperties": "throw-on-extras",
-    "controllerPathGlobs": ["src/**/*.controller.ts"],
-    "spec": {
-      "outputDirectory": "src/specs",
-      "specVersion": 3
-    },
-    "routes": {
-      "routesDir": "src/routes",
-      "esm": true
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/**/*.controller.ts"],
+  "spec": {
+    "outputDirectory": "src/specs",
+    "specVersion": 3,
+    "securityDefinitions": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
+  },
+  "routes": {
+    "routesDir": "src/routes",
+    "esm": true,
+    "authenticationModule": "src/modules/auth/auth.tsoa.ts"
   }
+}
