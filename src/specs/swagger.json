@@ -36,6 +36,48 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IApiErrorDetail": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"field": {
+						"type": "string"
+					},
+					"value": {}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IApiError": {
+				"properties": {
+					"code": {
+						"type": "number",
+						"format": "double"
+					},
+					"message": {
+						"type": "string"
+					},
+					"details": {
+						"items": {
+							"$ref": "#/components/schemas/IApiErrorDetail"
+						},
+						"type": "array"
+					},
+					"stack": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"code",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"TokenPayload": {
 				"properties": {
 					"token": {
@@ -81,48 +123,6 @@
 				"required": [
 					"user",
 					"tokens"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IApiErrorDetail": {
-				"properties": {
-					"message": {
-						"type": "string"
-					},
-					"field": {
-						"type": "string"
-					},
-					"value": {}
-				},
-				"required": [
-					"message"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IApiError": {
-				"properties": {
-					"code": {
-						"type": "number",
-						"format": "double"
-					},
-					"message": {
-						"type": "string"
-					},
-					"details": {
-						"items": {
-							"$ref": "#/components/schemas/IApiErrorDetail"
-						},
-						"type": "array"
-					},
-					"stack": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"code",
-					"message"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -183,6 +183,92 @@
 		}
 	},
 	"paths": {
+		"/v1/users/me": {
+			"get": {
+				"operationId": "GetMe",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserBaseModel"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/v1/users/{userId}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserBaseModel"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/v1/auth/register": {
 			"post": {
 				"operationId": "Register",
