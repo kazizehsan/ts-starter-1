@@ -51,11 +51,22 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IApiErrorDetail": {
+        "dataType": "refObject",
+        "properties": {
+            "message": {"dataType":"string","required":true},
+            "field": {"dataType":"string"},
+            "value": {"dataType":"any"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IApiError": {
         "dataType": "refObject",
         "properties": {
             "code": {"dataType":"double","required":true},
             "message": {"dataType":"string","required":true},
+            "details": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"IApiErrorDetail"}},{"dataType":"undefined"}],"required":true},
             "stack": {"dataType":"string"},
         },
         "additionalProperties": false,

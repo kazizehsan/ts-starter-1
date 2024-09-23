@@ -5,11 +5,12 @@ import tsoa from 'tsoa';
 import httpStatus from 'http-status';
 import config from '../../config/config.js';
 import { logger } from '../logger/index.js';
-import ApiError from './ApiError.js';
+import ApiError, { IApiErrorDetail } from './ApiError.js';
 
 export interface IApiError {
   code: number;
   message: string;
+  details: IApiErrorDetail[] | undefined;
   stack?: string;
 }
 
@@ -50,6 +51,7 @@ export const errorHandler = (err: ApiError, _req: Request, res: Response, _next:
   const response: IApiError = {
     code: statusCode,
     message,
+    details: err.details,
     ...(config.env === 'development' && { stack: err.stack }),
   };
 

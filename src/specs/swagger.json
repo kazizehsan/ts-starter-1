@@ -85,6 +85,22 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IApiErrorDetail": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"field": {
+						"type": "string"
+					},
+					"value": {}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IApiError": {
 				"properties": {
 					"code": {
@@ -93,6 +109,12 @@
 					},
 					"message": {
 						"type": "string"
+					},
+					"details": {
+						"items": {
+							"$ref": "#/components/schemas/IApiErrorDetail"
+						},
+						"type": "array"
 					},
 					"stack": {
 						"type": "string"

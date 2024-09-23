@@ -5,10 +5,12 @@ import { tokenService } from '../token/index.js';
 import { userService } from '../user/index.js';
 import * as authService from './auth.service.js';
 import { emailService } from '../email/index.js';
-import { Body, Controller, Post, Route, Response, SuccessResponse } from 'tsoa';
+import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares } from 'tsoa';
 import { NewRegisteredUser } from '../user/user.interfaces.js';
 import { IUserWithTokens } from './auth.interfaces.js';
 import { IApiError } from '../errors/error.js';
+import validate from '../validate/validate.middleware.js';
+import * as authValidation from './auth.validation.js';
 
 @Route('v1/auth')
 export class AuthController extends Controller {
@@ -16,6 +18,7 @@ export class AuthController extends Controller {
   @Response<IApiError>(422, 'Unprocessable Entity')
   @SuccessResponse('201', 'Created')
   @Post('register')
+  @Middlewares(validate(authValidation.register))
   public async register(@Body() requestBody: NewRegisteredUser): Promise<IUserWithTokens> {
     const user = await userService.registerUser(requestBody);
     const tokens = await tokenService.generateAuthTokens(user);

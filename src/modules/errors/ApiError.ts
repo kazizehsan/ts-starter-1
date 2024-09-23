@@ -1,3 +1,9 @@
+export interface IApiErrorDetail {
+  message: string;
+  field?: string;
+  value?: any;
+}
+
 class ApiError extends Error {
   statusCode: number;
 
@@ -5,10 +11,19 @@ class ApiError extends Error {
 
   override stack?: string;
 
-  constructor(statusCode: number, message: string, isOperational = true, stack = '') {
+  details: IApiErrorDetail[] | undefined;
+
+  constructor(
+    statusCode: number,
+    message: string,
+    isOperational = true,
+    stack = '',
+    details: IApiErrorDetail[] | undefined = undefined
+  ) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational;
+    this.details = details;
     if (stack) {
       this.stack = stack;
     } else {
