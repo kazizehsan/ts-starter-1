@@ -16,14 +16,19 @@ const expressAuthenticationRecasted = expressAuthentication as (req: ExRequest, 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "ROLE": {
+        "dataType": "refAlias",
+        "type": {"dataType":"enum","enums":["user","admin"],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IUserBaseModel": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"any"},
             "name": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-            "role": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true,"validators":{"minLength":{"errorMsg":"must contain minimum 8 characters","value":8}}},
+            "role": {"ref":"ROLE","required":true},
             "isEmailVerified": {"dataType":"boolean","required":true},
         },
         "additionalProperties": false,
@@ -46,6 +51,22 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string","required":true},
             "details": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"IApiErrorDetail"}},{"dataType":"undefined"}],"required":true},
             "stack": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_IUserBaseModel.Exclude_keyofIUserBaseModel.id-or-isEmailVerified__": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"password":{"dataType":"string","required":true,"validators":{"minLength":{"errorMsg":"must contain minimum 8 characters","value":8}}},"role":{"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["admin"]}],"required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "NewCreatedUser": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true,"validators":{"minLength":{"errorMsg":"must contain minimum 8 characters","value":8}}},
+            "role": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["admin"]}],"required":true},
         },
         "additionalProperties": false,
     },
@@ -79,7 +100,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_IUserBaseModel.Exclude_keyofIUserBaseModel.id-or-role-or-isEmailVerified__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"password":{"dataType":"string","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"password":{"dataType":"string","required":true,"validators":{"minLength":{"errorMsg":"must contain minimum 8 characters","value":8}}}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NewRegisteredUser": {
@@ -87,7 +108,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true,"validators":{"minLength":{"errorMsg":"must contain minimum 8 characters","value":8}}},
         },
         "additionalProperties": false,
     },
@@ -109,6 +130,37 @@ export function RegisterRoutes(app: Router) {
 
 
     
+        app.post('/v1/users',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.createUser)),
+
+            async function UserController_createUser(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"NewCreatedUser"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'createUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/v1/users/me',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),

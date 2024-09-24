@@ -1,12 +1,16 @@
-export const PERMISSIONS = {
-  getUsers: 'getUsers',
-  manageUsers: 'manageUsers',
+export enum PERMISSIONS {
+  getUsers = 'getUsers',
+  manageUsers = 'manageUsers',
+}
+
+export enum ROLES {
+  user = 'user',
+  admin = 'admin',
+}
+
+const RolesToPermissions = {
+  [ROLES.user]: [],
+  [ROLES.admin]: [PERMISSIONS.getUsers, PERMISSIONS.manageUsers],
 };
 
-const allRoles = {
-  user: [],
-  admin: [PERMISSIONS.getUsers, PERMISSIONS.manageUsers],
-};
-
-export const roles: string[] = Object.keys(allRoles);
-export const roleRights: Map<string, string[]> = new Map(Object.entries(allRoles));
+export const roleRights: Map<string, string[]> = new Map(Object.entries(RolesToPermissions));

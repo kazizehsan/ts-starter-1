@@ -3,7 +3,7 @@ import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import toJSON from '../toJSON/toJSON.js';
 import paginate, { QueryResult } from '../paginate/paginate.js';
-import { roles } from '../../config/roles.js';
+import { ROLES } from '../../config/roles.js';
 import { IUserBaseModel } from './user.interfaces.js';
 
 export interface IUserDoc extends IUserBaseModel, Document {
@@ -48,8 +48,8 @@ const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
     },
     role: {
       type: String,
-      enum: roles,
-      default: 'user',
+      enum: ROLES,
+      default: ROLES.user,
     },
     isEmailVerified: {
       type: Boolean,

@@ -7,6 +7,14 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"ROLE": {
+				"type": "string",
+				"enum": [
+					"user",
+					"admin"
+				],
+				"nullable": false
+			},
 			"IUserBaseModel": {
 				"properties": {
 					"id": {},
@@ -17,10 +25,11 @@
 						"type": "string"
 					},
 					"password": {
-						"type": "string"
+						"type": "string",
+						"minLength": 8
 					},
 					"role": {
-						"type": "string"
+						"$ref": "#/components/schemas/ROLE"
 					},
 					"isEmailVerified": {
 						"type": "boolean"
@@ -74,6 +83,64 @@
 				"required": [
 					"code",
 					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_IUserBaseModel.Exclude_keyofIUserBaseModel.id-or-isEmailVerified__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string",
+						"minLength": 8
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"admin"
+						]
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"password",
+					"role"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"NewCreatedUser": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string",
+						"minLength": 8
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"admin"
+						]
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"password",
+					"role"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -136,7 +203,8 @@
 						"type": "string"
 					},
 					"password": {
-						"type": "string"
+						"type": "string",
+						"minLength": 8
 					}
 				},
 				"required": [
@@ -156,7 +224,8 @@
 						"type": "string"
 					},
 					"password": {
-						"type": "string"
+						"type": "string",
+						"minLength": 8
 					}
 				},
 				"required": [
@@ -189,12 +258,12 @@
 		}
 	},
 	"paths": {
-		"/v1/users/me": {
-			"get": {
-				"operationId": "GetMe",
+		"/v1/users": {
+			"post": {
+				"operationId": "CreateUser",
 				"responses": {
-					"200": {
-						"description": "Success",
+					"201": {
+						"description": "Created.",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -203,8 +272,8 @@
 							}
 						}
 					},
-					"401": {
-						"description": "Unauthorized",
+					"400": {
+						"description": "Validation failed.",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -212,29 +281,6 @@
 								},
 								"examples": {
 									"Example 1": {}
-								}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/v1/users/{userId}": {
-			"get": {
-				"operationId": "GetUser",
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IUserBaseModel"
 								}
 							}
 						}
@@ -264,8 +310,152 @@
 								}
 							}
 						}
+					},
+					"422": {
+						"description": "Unprocessable entity.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
 					}
 				},
+				"description": "Create users by admin.",
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NewCreatedUser"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/users/me": {
+			"get": {
+				"operationId": "GetMe",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserBaseModel"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/v1/users/{userId}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserBaseModel"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation failed.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
 				"security": [
 					{
 						"jwt": []
@@ -288,7 +478,7 @@
 				"operationId": "Register",
 				"responses": {
 					"201": {
-						"description": "Created",
+						"description": "Created.",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -298,7 +488,7 @@
 						}
 					},
 					"400": {
-						"description": "Validation Failed",
+						"description": "Validation failed.",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -311,7 +501,7 @@
 						}
 					},
 					"422": {
-						"description": "Unprocessable Entity",
+						"description": "Unprocessable entity.",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -324,6 +514,10 @@
 						}
 					}
 				},
+				"description": "Self registration for new users.",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -343,7 +537,7 @@
 				"operationId": "Login",
 				"responses": {
 					"200": {
-						"description": "",
+						"description": "Success.",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -351,8 +545,37 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Validation failed.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Incorrect email or password.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IApiError"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
 					}
 				},
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {

@@ -5,7 +5,7 @@ import { tokenService } from '../token/index.js';
 import { userService } from '../user/index.js';
 import * as authService from './auth.service.js';
 import { emailService } from '../email/index.js';
-import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares } from 'tsoa';
+import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares, Tags } from 'tsoa';
 import { NewRegisteredUser } from '../user/user.interfaces.js';
 import { IUserWithTokens } from './auth.interfaces.js';
 import { IApiError } from '../errors/error.js';
@@ -13,19 +13,26 @@ import validate from '../validate/validate.middleware.js';
 import * as authValidation from './auth.validation.js';
 
 @Route('v1/auth')
+@Tags('Auth')
 export class AuthController extends Controller {
-  @Response<IApiError>(400, 'Validation Failed')
-  @Response<IApiError>(422, 'Unprocessable Entity')
-  @SuccessResponse('201', 'Created')
-  @Post('register')
+  /**
+   * Self registration for new users.
+   */
+  @Response<IApiError>(400, 'Validation failed.')
+  @Response<IApiError>(422, 'Unprocessable entity.')
+  @SuccessResponse('201', 'Created.')
   @Middlewares(validate(authValidation.register))
+  @Post('register')
   public async register(@Body() requestBody: NewRegisteredUser): Promise<IUserWithTokens> {
     const user = await userService.registerUser(requestBody);
     const tokens = await tokenService.generateAuthTokens(user);
     return { user, tokens };
   }
 
-  @SuccessResponse('200')
+  @Response<IApiError>(400, 'Validation failed.')
+  @Response<IApiError>(401, 'Incorrect email or password.')
+  @SuccessResponse('200', 'Success.')
+  @Middlewares(validate(authValidation.login))
   @Post('login')
   public async login(@Body() requestBody: { email: string; password: string }): Promise<IUserWithTokens> {
     const user = await authService.loginUserWithEmailAndPassword(requestBody.email, requestBody.password);
