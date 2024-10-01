@@ -16,6 +16,8 @@ export interface IUserBaseModel {
 
 export interface UpdateUserBody extends Partial<Omit<IUserBaseModel, 'id'>> {}
 
+export interface UpdateUserBodyByAdmin extends Partial<Omit<IUserBaseModel, 'id' | 'role' | 'isEmailVerified'>> {}
+
 export interface NewRegisteredUser extends Omit<IUserBaseModel, 'id' | 'role' | 'isEmailVerified'> {}
 
 export interface NewCreatedUser extends Omit<IUserBaseModel, 'id' | 'isEmailVerified'> {}

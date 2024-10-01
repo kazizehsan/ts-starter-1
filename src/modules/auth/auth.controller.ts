@@ -1,16 +1,15 @@
-import httpStatus from 'http-status';
-import { Request as ExpRequest, Response as ExpResponse } from 'express';
-import catchAsync from '../utils/catchAsync.js';
+import { Request as ExpRequest} from 'express';
 import { tokenService } from '../token/index.js';
 import { userService } from '../user/index.js';
 import * as authService from './auth.service.js';
 import { emailService } from '../email/index.js';
-import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares, Tags } from 'tsoa';
+import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares, Tags, Query, Security, Request } from 'tsoa';
 import { NewRegisteredUser } from '../user/user.interfaces.js';
 import { IUserWithTokens } from './auth.interfaces.js';
 import { IApiError } from '../errors/error.js';
 import validate from '../validate/validate.middleware.js';
 import * as authValidation from './auth.validation.js';
+import auth from './auth.middleware.js';
 
 @Route('v1/auth')
 @Tags('Auth')
@@ -39,49 +38,67 @@ export class AuthController extends Controller {
     const tokens = await tokenService.generateAuthTokens(user);
     return { user, tokens };
   }
+
+  @Response<IApiError>(400, 'Validation failed.')
+  @Response<IApiError>(404, 'Not Found.')
+  @SuccessResponse('204', 'Success.')
+  @Middlewares(validate(authValidation.logout))
+  @Post('logout')
+  public async logout(@Body() requestBody: { refreshToken: string }): Promise<void> {
+    await authService.logout(requestBody.refreshToken);
+    return;
+  }
+
+  @Response<IApiError>(401, 'Unauthorized.')
+  @Response<IApiError>(404, 'Not Found.')
+  @SuccessResponse('200', 'Success.')
+  @Middlewares(validate(authValidation.refreshTokens))
+  @Post('refresh-tokens')
+  public async refreshTokens(@Body() requestBody: { refreshToken: string }): Promise<IUserWithTokens> {
+    const userWithTokens = await authService.refreshAuth(requestBody.refreshToken);
+    return userWithTokens;
+  }
+
+  @Response<IApiError>(404, 'Not Found.')
+  @SuccessResponse('204', 'Success.')
+  @Middlewares(validate(authValidation.forgotPassword))
+  @Post('forgot-password')
+  public async forgotPassword(@Body() requestBody: { email: string }): Promise<void> {
+    const resetPasswordToken = await tokenService.generateResetPasswordToken(requestBody.email);
+    await emailService.sendResetPasswordEmail(requestBody.email, resetPasswordToken);
+    return;
+  }
+
+  @Response<IApiError>(400, 'Validation failed.')
+  @Response<IApiError>(401, 'Unauthorized.')
+  @Response<IApiError>(404, 'Not Found.')
+  @SuccessResponse('204', 'Success.')
+  @Middlewares(validate(authValidation.resetPassword))
+  @Post('reset-password')
+  public async resetPassword(@Query() token: string, @Body() requestBody: { password: string }): Promise<void> {
+    await authService.resetPassword(token, requestBody.password);
+    return;
+  }
+
+  @Response<IApiError>(401, 'Unauthorized.')
+  @SuccessResponse('204', 'Success.')
+  @Security('jwt') // just adds auth specs to openapi
+  @Middlewares(auth()) // actually handles auth
+  @Post('send-verification-email')
+  public async sendVerificationEmail(@Request() req: ExpRequest): Promise<void> {
+    const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
+    await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, req.user.name);
+    return;
+  }
+
+  @Response<IApiError>(400, 'Validation failed.')
+  @Response<IApiError>(401, 'Email verification failed.')
+  @Response<IApiError>(404, 'Not Found.')
+  @SuccessResponse('204', 'Success.')
+  @Middlewares(validate(authValidation.verifyEmail))
+  @Post('verify-email')
+  public async verifyEmail(@Query() token: string): Promise<void> {
+    await authService.verifyEmail(token);
+    return;
+  }
 }
-
-export const register = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  const user = await userService.registerUser(req.body);
-  const tokens = await tokenService.generateAuthTokens(user);
-  res.status(httpStatus.CREATED).send({ user, tokens });
-});
-
-export const login = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  const { email, password } = req.body;
-  const user = await authService.loginUserWithEmailAndPassword(email, password);
-  const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens });
-});
-
-export const logout = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  await authService.logout(req.body.refreshToken);
-  res.status(httpStatus.NO_CONTENT).send();
-});
-
-export const refreshTokens = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  const userWithTokens = await authService.refreshAuth(req.body.refreshToken);
-  res.send({ ...userWithTokens });
-});
-
-export const forgotPassword = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
-  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
-  res.status(httpStatus.NO_CONTENT).send();
-});
-
-export const resetPassword = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  await authService.resetPassword(req.query['token'], req.body.password);
-  res.status(httpStatus.NO_CONTENT).send();
-});
-
-export const sendVerificationEmail = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
-  await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, req.user.name);
-  res.status(httpStatus.NO_CONTENT).send();
-});
-
-export const verifyEmail = catchAsync(async (req: ExpRequest, res: ExpResponse) => {
-  await authService.verifyEmail(req.query['token']);
-  res.status(httpStatus.NO_CONTENT).send();
-});

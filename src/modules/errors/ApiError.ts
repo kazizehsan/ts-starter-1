@@ -2,6 +2,7 @@ export interface IApiErrorDetail {
   message: string;
   field?: string;
   value?: any;
+  path?: string;
 }
 
 class ApiError extends Error {

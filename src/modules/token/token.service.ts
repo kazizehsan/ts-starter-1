@@ -110,7 +110,7 @@ export const generateAuthTokens = async (user: IUserBaseModel): Promise<AccessAn
 export const generateResetPasswordToken = async (email: string): Promise<string> => {
   const user = await userService.getUserByEmail(email);
   if (!user) {
-    throw new ApiError(httpStatus.NO_CONTENT, '');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);

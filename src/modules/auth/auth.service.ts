@@ -45,7 +45,7 @@ export const refreshAuth = async (refreshToken: string): Promise<IUserWithTokens
     const refreshTokenDoc = (await verifyToken(refreshToken, tokenTypes.REFRESH)) as ITokenDoc;
     const user = await getUserById(refreshTokenDoc.user);
     if (!user) {
-      throw new Error();
+      throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
     }
     await refreshTokenDoc.deleteOne();
     const tokens = await generateAuthTokens(user);
@@ -66,7 +66,7 @@ export const resetPassword = async (resetPasswordToken: any, newPassword: string
     const resetPasswordTokenDoc = await verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
     const user = await getUserById(resetPasswordTokenDoc.user);
     if (!user) {
-      throw new Error();
+      throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
     }
     await updateUserById(user.id, { password: newPassword });
     await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
@@ -85,7 +85,7 @@ export const verifyEmail = async (verifyEmailToken: any): Promise<IUserBaseModel
     const verifyEmailTokenDoc = await verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
     const user = await getUserById(verifyEmailTokenDoc.user);
     if (!user) {
-      throw new Error();
+      throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
     }
     await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
     const updatedUser = await updateUserById(user.id, { isEmailVerified: true });

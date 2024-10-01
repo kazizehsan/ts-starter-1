@@ -20,6 +20,7 @@ const validate =
           message: detail.message,
           field: detail.context?.key || '',
           value: detail.context?.value || '',
+          path: detail.path?.length > 0 ? detail.path[0]!.toString() : '',
         };
       });
       return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage, true, '', errorDetails));
