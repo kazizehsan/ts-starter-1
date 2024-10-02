@@ -11,7 +11,8 @@ This project does not use experimental flags such as `--es-module-specifier-reso
 ## Table of Contents
 
 - [Features](#features)
-- [Local Development](#local-development)
+- [Quick Start](#quick-start)
+- [Manual Installation](#manual-installation)
 - [AWS Lambda Deployment](#aws-lambda-deployment)
 - [Inspirations](#inspirations)
 - [License](#license)
