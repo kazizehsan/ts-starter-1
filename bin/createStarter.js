@@ -99,9 +99,7 @@ async function setup() {
 
     const pkg = FsExt.readJsonSync(makePath(appPath, 'package.json'));
     pkg.name = folderName;
-    pkg['main'] = 'dist/index.js';
     delete pkg.bin;
-    delete pkg.files;
     delete pkg.repository;
     delete pkg.author;
     pkg.config['region'] = options.awsRegion;

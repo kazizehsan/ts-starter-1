@@ -2,10 +2,8 @@
   "name": "@kazize/create-ts-starter-1",
   "version": "1.0.1",
   "description": "TypeScript Express.js backend boilerplate on AWS Lambda",
+  "main": "dist/index.js",
   "bin": "bin/createStarter.js",
-  "files": [
-    "bin/"
-  ],
   "repository": "https://github.com/kazizehsan/ts-starter-1.git",
   "author": "Kazi Ehsan Aziz <kazizehsan@gmail.com>",
   "license": "MIT",
@@ -71,7 +69,7 @@
     "@types/express-rate-limit": "^5.1.3",
     "@types/jest": "^29.5.13",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^16.11.12",
+    "@types/node": "^20.16.10",
     "@types/nodemailer": "^6.4.4",
     "@types/passport-jwt": "^3.0.6",
     "@types/supertest": "^2.0.11",
