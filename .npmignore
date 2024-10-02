@@ -1,0 +1,47 @@
+.editorconfig
+.env.example
+.eslintignore
+.eslintrc.json
+.gitattributes
+.github/workflows/node.js.yml
+.husky/commit-msg
+.husky/post-commit
+.husky/pre-commit
+.lintstagedrc.json
+.nvmrc
+.prettierignore
+.prettierrc.json
+CONTRIBUTING.md
+TODO.md
+commitlint.config.cjs
+dist/index.js
+dist/**
+sam-template.yaml
+src/
+tsconfig.json
+tsoa.json
+vitest.config.js
+
+####################### FROM .gitignore, update if needed
+# Dependencies
+node_modules
+
+# yarn error logs
+yarn-error.log
+
+# Environment varibales
+.env*
+!.env*.example
+
+# Code coverage
+coverage
+
+# build folder
+dist
+.aws-sam
+
+# docker volume
+data
+
+# Mac OS
+.DS_Store
