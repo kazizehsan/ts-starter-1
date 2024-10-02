@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-commented-out-tests */
 import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import request from 'supertest';
@@ -6,9 +5,9 @@ import httpStatus from 'http-status';
 import httpMocks from 'node-mocks-http';
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
-import { jest } from '@jest/globals';
+import { vi } from 'vitest';
 import app from '../../app.js';
-import setupTestDB from '../jest/setupTestDB.js';
+import setupTestDB from '../test/setupTestDB.js';
 import User from '../user/user.model.js';
 import config from '../../config/config.js';
 import { NewRegisteredUser } from '../user/user.interfaces.js';
@@ -279,7 +278,6 @@ describe('Auth routes', () => {
       const dbUser = await User.findById(userOne._id);
       if (dbUser) {
         const isPasswordMatch = await bcrypt.compare('password2', dbUser.password);
-        // eslint-disable-next-line jest/no-conditional-expect
         expect(isPasswordMatch).toBe(true);
       }
 
@@ -427,7 +425,7 @@ describe('Auth middleware', () => {
   test('should call next with no errors if access token is valid', async () => {
     await insertUsers([userOne]);
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${userOneAccessToken}` } });
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
@@ -438,7 +436,7 @@ describe('Auth middleware', () => {
   test('should call next with unauthorized error if access token is not found in header', async () => {
     await insertUsers([userOne]);
     const req = httpMocks.createRequest();
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
@@ -451,7 +449,7 @@ describe('Auth middleware', () => {
   test('should call next with unauthorized error if access token is not a valid jwt token', async () => {
     await insertUsers([userOne]);
     const req = httpMocks.createRequest({ headers: { Authorization: 'Bearer randomToken' } });
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
@@ -466,7 +464,7 @@ describe('Auth middleware', () => {
     const expires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
     const refreshToken = tokenService.generateToken(userOne._id.toString(), expires, tokenTypes.REFRESH);
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${refreshToken}` } });
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
@@ -481,7 +479,7 @@ describe('Auth middleware', () => {
     const expires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
     const accessToken = tokenService.generateToken(userOne._id.toString(), expires, tokenTypes.ACCESS, 'invalidSecret');
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${accessToken}` } });
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
@@ -496,7 +494,7 @@ describe('Auth middleware', () => {
     const expires = moment().subtract(1, 'minutes');
     const accessToken = tokenService.generateToken(userOne._id.toString(), expires, tokenTypes.ACCESS);
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${accessToken}` } });
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
@@ -508,7 +506,7 @@ describe('Auth middleware', () => {
 
   test('should call next with unauthorized error if user is not found', async () => {
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${userOneAccessToken}` } });
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware()(req, httpMocks.createResponse(), next);
 
@@ -518,27 +516,14 @@ describe('Auth middleware', () => {
     );
   });
 
-  test('should call next with forbidden error if user does not have required rights and userId is not in params', async () => {
+  test('should call next with forbidden error if user does not have required rights', async () => {
     await insertUsers([userOne]);
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${userOneAccessToken}` } });
-    const next = jest.fn();
+    const next = vi.fn();
 
     await authMiddleware('anyRight')(req, httpMocks.createResponse(), next);
 
     expect(next).toHaveBeenCalledWith(expect.any(ApiError));
     expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: httpStatus.FORBIDDEN, message: 'Forbidden' }));
-  });
-
-  test('should call next with no errors if user does not have required rights but userId is in params', async () => {
-    await insertUsers([userOne]);
-    const req = httpMocks.createRequest({
-      headers: { Authorization: `Bearer ${userOneAccessToken}` },
-      params: { userId: userOne._id.toHexString() },
-    });
-    const next = jest.fn();
-
-    await authMiddleware('anyRight')(req, httpMocks.createResponse(), next);
-
-    expect(next).toHaveBeenCalledWith();
   });
 });
