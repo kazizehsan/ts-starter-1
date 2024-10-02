@@ -27,7 +27,7 @@ This project does not use experimental flags such as `--es-module-specifier-reso
 - **Logging**: using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
 - **Testing**: unit and integration tests using [Vitest](https://vitest.dev/)
 - **Error handling**: centralized error handling mechanism
-- **API documentation**: with [swagger-jsdoc](https://github.com/Surnet/swagger-jsdoc) and [swagger-ui-express](https://github.com/scottie1984/swagger-ui-express)
+- **API documentation**: automatic OpenAPI spec generation with decorators from [tsoa](https://tsoa-community.github.io/docs/), served with [swagger-ui-express](https://github.com/scottie1984/swagger-ui-express)
 - **Dependency management**: with [Yarn](https://yarnpkg.com)
 - **Environment variables**: using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme) and AWS Secrets Manager
 - **Security**: set security HTTP headers using [helmet](https://helmetjs.github.io)
