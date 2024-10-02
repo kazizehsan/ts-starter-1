@@ -127,6 +127,9 @@ async function setup() {
     // Delete .git folder
     await runCmd('npx rimraf ./.git');
 
+    // Delete .npmignore file
+    await runCmd('npx rimraf ./.npmignore');
+
     // Remove extra files
     if (!useYarn) {
       fs.unlinkSync(path.join(appPath, 'yarn.lock'));
