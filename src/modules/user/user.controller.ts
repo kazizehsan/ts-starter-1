@@ -1,9 +1,5 @@
 import httpStatus from 'http-status';
 import { Request as ExpRequest } from 'express';
-import ApiError from '../errors/ApiError.js';
-import pick from '../utils/pick.js';
-import { IOptions, QueryResult } from '../paginate/paginate.js';
-import * as userService from './user.service.js';
 import {
   Body,
   Controller,
@@ -21,10 +17,14 @@ import {
   SuccessResponse,
   Tags,
 } from 'tsoa';
+import ApiError from '../errors/ApiError.js';
+import pick from '../utils/pick.js';
+import { IOptions, QueryResult } from '../paginate/paginate.js';
+import * as userService from './user.service.js';
 import { IApiError } from '../errors/error.js';
-import auth from './../auth/auth.middleware.js';
+import auth from '../auth/auth.middleware.js';
 import { IUserBaseModel, NewCreatedUser, UpdateUserBodyByAdmin } from './user.interfaces.js';
-import { PERMISSIONS } from './../../config/roles.js';
+import { PERMISSIONS } from '../../config/roles.js';
 import validate from '../validate/validate.middleware.js';
 import * as userValidation from './user.validation.js';
 
@@ -123,6 +123,5 @@ export class UserController extends Controller {
   @Delete('{userId}')
   public async deleteUser(@Path() userId: string): Promise<void> {
     await userService.deleteUserById(userId);
-    return;
   }
 }

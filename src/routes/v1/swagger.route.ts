@@ -1,6 +1,6 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerJSON from '../../specs/swagger.json' assert { type: "json" };
+import swaggerJSON from '../../specs/swagger.json' assert { type: 'json' };
 
 const router = express.Router();
 

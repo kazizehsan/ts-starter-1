@@ -6,6 +6,7 @@ import config from './config/config.js';
 
 export const handler = async (event: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback) => {
   await mongoose.connect(config.mongoose.url);
+  // eslint-disable-next-line no-console
   console.log('Connected to MongoDB');
   const serverlessExpressInstance = serverlessExpress({ app });
   return serverlessExpressInstance(event, context, callback);

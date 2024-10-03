@@ -17,12 +17,13 @@ export interface IApiError {
 export const errorConverter = (err: any, _req: Request, _res: Response, next: NextFunction) => {
   let error = err;
   if (!(error instanceof ApiError)) {
-    const statusCode =
-      error.statusCode || error instanceof mongoose.Error
-        ? httpStatus.BAD_REQUEST
-        : error instanceof tsoa.ValidateError
-        ? httpStatus.UNPROCESSABLE_ENTITY
-        : httpStatus.INTERNAL_SERVER_ERROR;
+    let fallbackStatusCode = httpStatus.INTERNAL_SERVER_ERROR;
+    if (error instanceof mongoose.Error) {
+      fallbackStatusCode = httpStatus.BAD_REQUEST;
+    } else if (error instanceof tsoa.ValidateError) {
+      fallbackStatusCode = httpStatus.UNPROCESSABLE_ENTITY;
+    }
+    const statusCode = error.statusCode || fallbackStatusCode;
 
     let message: string = '';
     if (error instanceof tsoa.ValidateError) {

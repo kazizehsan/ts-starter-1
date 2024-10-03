@@ -14,7 +14,7 @@ export const createUser = async (userBody: NewCreatedUser): Promise<IUserBaseMod
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  return await User.create(userBody);
+  return User.create(userBody);
 };
 
 /**
@@ -26,7 +26,7 @@ export const registerUser = async (userBody: NewRegisteredUser): Promise<IUserBa
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  return await User.create(userBody);
+  return User.create(userBody);
 };
 
 /**

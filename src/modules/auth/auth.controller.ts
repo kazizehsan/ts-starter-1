@@ -1,9 +1,9 @@
-import { Request as ExpRequest} from 'express';
+import { Request as ExpRequest } from 'express';
+import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares, Tags, Query, Security, Request } from 'tsoa';
 import { tokenService } from '../token/index.js';
 import { userService } from '../user/index.js';
 import * as authService from './auth.service.js';
 import { emailService } from '../email/index.js';
-import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares, Tags, Query, Security, Request } from 'tsoa';
 import { NewRegisteredUser } from '../user/user.interfaces.js';
 import { IUserWithTokens } from './auth.interfaces.js';
 import { IApiError } from '../errors/error.js';
@@ -46,7 +46,6 @@ export class AuthController extends Controller {
   @Post('logout')
   public async logout(@Body() requestBody: { refreshToken: string }): Promise<void> {
     await authService.logout(requestBody.refreshToken);
-    return;
   }
 
   @Response<IApiError>(401, 'Unauthorized.')
@@ -66,7 +65,6 @@ export class AuthController extends Controller {
   public async forgotPassword(@Body() requestBody: { email: string }): Promise<void> {
     const resetPasswordToken = await tokenService.generateResetPasswordToken(requestBody.email);
     await emailService.sendResetPasswordEmail(requestBody.email, resetPasswordToken);
-    return;
   }
 
   @Response<IApiError>(400, 'Validation failed.')
@@ -77,7 +75,6 @@ export class AuthController extends Controller {
   @Post('reset-password')
   public async resetPassword(@Query() token: string, @Body() requestBody: { password: string }): Promise<void> {
     await authService.resetPassword(token, requestBody.password);
-    return;
   }
 
   @Response<IApiError>(401, 'Unauthorized.')
@@ -88,7 +85,6 @@ export class AuthController extends Controller {
   public async sendVerificationEmail(@Request() req: ExpRequest): Promise<void> {
     const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
     await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, req.user.name);
-    return;
   }
 
   @Response<IApiError>(400, 'Validation failed.')
@@ -99,6 +95,5 @@ export class AuthController extends Controller {
   @Post('verify-email')
   public async verifyEmail(@Query() token: string): Promise<void> {
     await authService.verifyEmail(token);
-    return;
   }
 }

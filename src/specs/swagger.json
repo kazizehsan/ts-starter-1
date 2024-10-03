@@ -301,7 +301,7 @@
 	},
 	"info": {
 		"title": "@kazize/create-ts-starter-1",
-		"version": "1.0.1",
+		"version": "2.0.2",
 		"description": "TypeScript Express.js backend boilerplate on AWS Lambda",
 		"license": {
 			"name": "MIT"

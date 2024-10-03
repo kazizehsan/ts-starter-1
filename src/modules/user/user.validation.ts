@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { password, objectId } from '../validate/custom.validation.js';
 import { NewCreatedUser } from './user.interfaces.js';
-import { ROLES } from './../../config/roles.js';
+import { ROLES } from '../../config/roles.js';
 
 const createUserBody: Record<keyof NewCreatedUser, any> = {
   email: Joi.string().required().email(),

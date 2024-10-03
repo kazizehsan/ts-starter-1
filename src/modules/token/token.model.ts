@@ -3,8 +3,8 @@ import tokenTypes from './token.types.js';
 import toJSON from '../toJSON/toJSON.js';
 import { ITokenBaseModel } from './token.interfaces.js';
 
-export interface ITokenDoc extends ITokenBaseModel, Document { }
-export interface ITokenModel extends Model<ITokenDoc> { }
+export interface ITokenDoc extends ITokenBaseModel, Document {}
+export interface ITokenModel extends Model<ITokenDoc> {}
 
 const tokenSchema = new mongoose.Schema<ITokenDoc, ITokenModel>(
   {
@@ -43,4 +43,3 @@ tokenSchema.plugin(toJSON);
 const Token = mongoose.model<ITokenDoc, ITokenModel>('Token', tokenSchema);
 
 export default Token;
-
