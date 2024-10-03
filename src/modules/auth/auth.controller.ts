@@ -10,9 +10,11 @@ import { IApiError } from '../errors/error.js';
 import validate from '../validate/validate.middleware.js';
 import * as authValidation from './auth.validation.js';
 import auth from './auth.middleware.js';
+import { provideSingleton } from '../utils/provideSingleton.js';
 
 @Route('v1/auth')
 @Tags('Auth')
+@provideSingleton(AuthController)
 export class AuthController extends Controller {
   /**
    * Self registration for new users.

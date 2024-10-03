@@ -16,6 +16,7 @@
   "routes": {
     "routesDir": "src/routes",
     "esm": true,
-    "authenticationModule": "src/modules/auth/auth.tsoa.ts"
+    "authenticationModule": "src/modules/auth/auth.tsoa.ts",
+    "iocModule": "src/modules/utils/ioc.ts"
   }
 }

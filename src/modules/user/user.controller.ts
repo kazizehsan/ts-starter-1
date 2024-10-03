@@ -27,9 +27,11 @@ import { IUserBaseModel, NewCreatedUser, UpdateUserBodyByAdmin } from './user.in
 import { PERMISSIONS } from '../../config/roles.js';
 import validate from '../validate/validate.middleware.js';
 import * as userValidation from './user.validation.js';
+import { provideSingleton } from '../utils/provideSingleton.js';
 
 @Route('v1/users')
 @Tags('Users')
+@provideSingleton(UserController)
 export class UserController extends Controller {
   /**
    * Create users by admin.
