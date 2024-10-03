@@ -12,7 +12,7 @@ import { jwtStrategy } from './modules/auth/index.js';
 import { authLimiter } from './modules/utils/index.js';
 import { ApiError, errorConverter, errorHandler } from './modules/errors/index.js';
 import routes from './routes/v1/index.js';
-import { RegisterRoutes } from "./routes/routes.js";
+import { RegisterRoutes } from './routes/routes.js';
 
 const app: Express = express();
 

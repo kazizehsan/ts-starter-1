@@ -13,6 +13,7 @@ This project does not use experimental flags such as `--es-module-specifier-reso
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [Manual Installation](#manual-installation)
+- [Husky Setup](#husky-setup)
 - [AWS Lambda Deployment](#aws-lambda-deployment)
 - [Inspirations](#inspirations)
 - [License](#license)
@@ -49,10 +50,22 @@ To clone this project, run:
 ```
 npx @kazize/create-ts-starter-1
 ```
-Or,
+or,
 ```
 npm init @kazize/ts-starter-1
 ```
+and follow the prompts to setup the project.
+
+Open `.env` and modify the environment variables (if needed).
+
+Make sure you have MongoDB running locally. Then:
+```bash
+yarn dev
+```
+
+**More steps:**
+
+* initialise your own fresh repository with `git init`
 
 ## Manual Installation
 
@@ -68,12 +81,26 @@ Set the environment variables:
 ```bash
 cp .env.example .env
 ```
-Open .env and modify the environment variables (if needed).
+Open `.env` and modify the environment variables (if needed).
 
-Make sure you have MongoDB running. Then:
+Make sure you have MongoDB running locally. Then:
 ```bash
 yarn dev
 ```
+
+**More steps:**
+
+* remove the existing `.git` folder
+* rename the project folder from `ts-starter-1` to something else, remove other references to `ts-starter-1` from `package.json` and elsewhere.
+* initialise your own fresh repository with `git init`
+
+## Husky Setup
+
+After you have initialised your own fresh git repository, install the Husky git hooks provided with project.
+```
+yarn run husky install
+```
+Now husky tasks should run on `git commit`.
 
 ## AWS Lambda Deployment
 
@@ -92,7 +119,7 @@ Create AWS Secrets Manager secrets like so:
 * ts-starter-1/prod/JWT:secret
 * ts-starter-1/prod/MONGODB_URL:url
 
-If you change the prefix in the secrets above from `ts-starter-1` to something else, then update `sam-template.yaml` as well.
+If you change the prefix in the secrets above from `ts-starter-1` to something else, then update them in `sam-template.yaml` as well.
 
 Finally, run the following. **_Warning_**, this will create an S3 bucket and a CloudFormation Stack on your configured AWS account.
 ```bash
