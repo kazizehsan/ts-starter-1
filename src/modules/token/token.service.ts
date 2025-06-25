@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
 import httpStatus from 'http-status';
-import config from '../../config/config.js';
-import Token from './token.model.js';
-import ApiError from '../errors/ApiError.js';
-import tokenTypes from './token.types.js';
-import { AccessAndRefreshTokens, ITokenBaseModel } from './token.interfaces.js';
-import { userService } from '../user/index.js';
-import { IUserBaseModel } from '../user/user.interfaces.js';
-import { IPayload } from '../auth/passport.js';
+import config from '@/config/config.js';
+import Token from '@/modules/token/token.model.js';
+import ApiError from '@/lib/errors/ApiError.js';
+import tokenTypes from '@/modules/token/token.types.js';
+import { AccessAndRefreshTokens, ITokenBaseModel } from '@/modules/token/token.interfaces.js';
+import { userService } from '@/modules/user/index.js';
+import { IUserBaseModel } from '@/modules/user/user.interfaces.js';
+import { IPayload } from '@/modules/auth/passport.js';
 
 /**
  * Generate token

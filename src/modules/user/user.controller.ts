@@ -17,17 +17,17 @@ import {
   SuccessResponse,
   Tags,
 } from 'tsoa';
-import ApiError from '../errors/ApiError.js';
-import pick from '../utils/pick.js';
-import { IOptions, QueryResult } from '../paginate/paginate.js';
-import * as userService from './user.service.js';
-import { IApiError } from '../errors/error.js';
-import auth from '../auth/auth.middleware.js';
-import { IUserBaseModel, NewCreatedUser, UpdateUserBodyByAdmin } from './user.interfaces.js';
-import { PERMISSIONS } from '../../config/roles.js';
-import validate from '../validate/validate.middleware.js';
-import * as userValidation from './user.validation.js';
-import { provideSingleton } from '../utils/provideSingleton.js';
+import ApiError from '@/lib/errors/ApiError.js';
+import pick from '@/lib/utils/pick.js';
+import { IOptions, QueryResult } from '@/lib/paginate/paginate.js';
+import * as userService from '@/modules/user/user.service.js';
+import { IApiError } from '@/lib/errors/error.js';
+import auth from '@/modules/auth/auth.middleware.js';
+import { IUserBaseModel, NewCreatedUser, UpdateUserBodyByAdmin } from '@/modules/user/user.interfaces.js';
+import { PERMISSIONS } from '@/config/roles.js';
+import validate from '@/lib/validate/validate.middleware.js';
+import * as userValidation from '@/modules/user/user.validation.js';
+import { provideSingleton } from '@/lib/utils/provideSingleton.js';
 
 @Route('v1/users')
 @Tags('Users')

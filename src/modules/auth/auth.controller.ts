@@ -1,16 +1,16 @@
 import { Request as ExpRequest } from 'express';
 import { Body, Controller, Post, Route, Response, SuccessResponse, Middlewares, Tags, Query, Security, Request } from 'tsoa';
-import { tokenService } from '../token/index.js';
-import { userService } from '../user/index.js';
-import * as authService from './auth.service.js';
-import { emailService } from '../email/index.js';
-import { NewRegisteredUser } from '../user/user.interfaces.js';
-import { IUserWithTokens } from './auth.interfaces.js';
-import { IApiError } from '../errors/error.js';
-import validate from '../validate/validate.middleware.js';
-import * as authValidation from './auth.validation.js';
-import auth from './auth.middleware.js';
-import { provideSingleton } from '../utils/provideSingleton.js';
+import { tokenService } from '@/modules/token/index.js';
+import { userService } from '@/modules/user/index.js';
+import * as authService from '@/modules/auth/auth.service.js';
+import { emailService } from '@/lib/email/index.js';
+import { NewRegisteredUser } from '@/modules/user/user.interfaces.js';
+import { IUserWithTokens } from '@/modules/auth/auth.interfaces.js';
+import { IApiError } from '@/lib/errors/error.js';
+import validate from '@/lib/validate/validate.middleware.js';
+import * as authValidation from '@/modules/auth/auth.validation.js';
+import auth from '@/modules/auth/auth.middleware.js';
+import { provideSingleton } from '@/lib/utils/provideSingleton.js';
 
 @Route('v1/auth')
 @Tags('Auth')

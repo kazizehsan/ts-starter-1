@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
-import config from '../../config/config.js';
-import logger from '../logger/logger.js';
-import { Message } from './email.interfaces.js';
+import config from '@/config/config.js';
+import logger from '@/lib/logger/logger.js';
+import { Message } from '@/lib/email/email.interfaces.js';
 
 export const transport = nodemailer.createTransport(config.email.smtp);
 /* istanbul ignore next */

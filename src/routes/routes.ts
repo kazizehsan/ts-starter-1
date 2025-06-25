@@ -8,7 +8,7 @@ import { UserController } from './../modules/user/user.controller.js';
 import { AuthController } from './../modules/auth/auth.controller.js';
 import { expressAuthentication } from './../modules/auth/auth.tsoa.js';
 // @ts-ignore - no great way to install types from subpackage
-import { iocContainer } from './../modules/utils/ioc.js';
+import { iocContainer } from './../lib/utils/ioc.js';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 

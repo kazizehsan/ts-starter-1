@@ -1,7 +1,7 @@
 import mongoose, { Document, Model } from 'mongoose';
-import tokenTypes from './token.types.js';
-import toJSON from '../toJSON/toJSON.js';
-import { ITokenBaseModel } from './token.interfaces.js';
+import tokenTypes from '@/modules/token/token.types.js';
+import toJSON from '@/lib/toJSON/toJSON.js';
+import { ITokenBaseModel } from '@/modules/token/token.interfaces.js';
 
 export interface ITokenDoc extends ITokenBaseModel, Document {}
 export interface ITokenModel extends Model<ITokenDoc> {}

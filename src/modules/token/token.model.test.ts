@@ -1,11 +1,11 @@
 import moment from 'moment';
 import mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
-import config from '../../config/config.js';
-import { NewToken } from './token.interfaces.js';
-import tokenTypes from './token.types.js';
-import Token from './token.model.js';
-import * as tokenService from './token.service.js';
+import config from '@/config/config.js';
+import { NewToken } from '@/modules/token/token.interfaces.js';
+import tokenTypes from '@/modules/token/token.types.js';
+import Token from '@/modules/token/token.model.js';
+import * as tokenService from '@/modules/token/token.service.js';
 
 const password = 'password1';
 const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');

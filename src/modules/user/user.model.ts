@@ -1,10 +1,10 @@
 import mongoose, { Document, Model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import toJSON from '../toJSON/toJSON.js';
-import paginate, { QueryResult } from '../paginate/paginate.js';
-import { ROLES } from '../../config/roles.js';
-import { IUserBaseModel } from './user.interfaces.js';
+import toJSON from '@/lib/toJSON/toJSON.js';
+import paginate, { QueryResult } from '@/lib/paginate/paginate.js';
+import { ROLES } from '@/config/roles.js';
+import { IUserBaseModel } from '@/modules/user/user.interfaces.js';
 
 export interface IUserDoc extends IUserBaseModel, Document {
   isPasswordMatch(password: string): Promise<boolean>;

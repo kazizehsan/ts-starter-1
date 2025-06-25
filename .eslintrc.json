@@ -7,6 +7,14 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
+    }
+  },
   "rules": {
     "no-console": "error",
     "func-names": "off",
@@ -24,13 +32,40 @@
         "ecmaVersion": 2018,
         "project": ["./tsconfig.json"]
       },
+      "settings": {
+        "import/resolver": {
+          "typescript": {
+            "alwaysTryTypes": true,
+            "project": "./tsconfig.json"
+          }
+        }
+      },
       "rules": {
         "no-console": "error",
         "func-names": "off",
         "no-underscore-dangle": "off",
         "consistent-return": "off",
         "import/prefer-default-export": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "js": "always",
+            "ts": "never"
+          }
+        ],
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": [
+              "**/*.test.*",
+              "**/*.spec.*",
+              "**/lambda.ts",
+              "**/setupTestDB.ts"
+            ]
+          }
+        ]
       }
     }
   ]

@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import User from './user.model.js';
-import ApiError from '../errors/ApiError.js';
-import { IOptions, QueryResult } from '../paginate/paginate.js';
-import { NewCreatedUser, UpdateUserBody, NewRegisteredUser, IUserBaseModel } from './user.interfaces.js';
+import User from '@/modules/user/user.model.js';
+import ApiError from '@/lib/errors/ApiError.js';
+import { IOptions, QueryResult } from '@/lib/paginate/paginate.js';
+import { NewCreatedUser, UpdateUserBody, NewRegisteredUser, IUserBaseModel } from '@/modules/user/user.interfaces.js';
 
 /**
  * Create a user

@@ -3,8 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import tsoa from 'tsoa';
 import httpStatus from 'http-status';
-import config from '../../config/config.js';
-import { logger } from '../logger/index.js';
+import config from '@/config/config.js';
+import { logger } from '@/lib/logger/index.js';
 import ApiError, { IApiErrorDetail } from './ApiError.js';
 
 export interface IApiError {

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import setupTestDB from '../test/setupTestDB.js';
-import { toJSON } from '../toJSON/index.js';
-import paginate from './paginate.js';
-import { IProject, IProjectDoc, IProjectModel, ITaskDoc, ITaskModel } from './paginate.types.js';
+import setupTestDB from '@/lib/test/setupTestDB.js';
+import { toJSON } from '@/lib/toJSON/index.js';
+import paginate from '@/lib/paginate/paginate.js';
+import { IProject, IProjectDoc, IProjectModel, ITaskDoc, ITaskModel } from '@/lib/paginate/paginate.types.js';
 
 const projectSchema = new mongoose.Schema<IProjectDoc, IProjectModel>({
   name: {

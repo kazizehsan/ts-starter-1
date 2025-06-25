@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import httpStatus from 'http-status';
-import ApiError from '../errors/ApiError.js';
-import { roleRights } from '../../config/roles.js';
-import { IUserBaseModel } from '../user/user.interfaces.js';
+import ApiError from '@/lib/errors/ApiError.js';
+import { roleRights } from '@/config/roles.js';
+import { IUserBaseModel } from '@/modules/user/user.interfaces.js';
 
 const verifyCallback =
   (req: Request, resolve: any, reject: any, requiredRights: string[]) =>

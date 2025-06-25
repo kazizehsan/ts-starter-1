@@ -4,9 +4,9 @@ import httpMocks from 'node-mocks-http';
 import { vi } from 'vitest';
 import winston from 'winston';
 import { errorConverter, errorHandler } from './error.js';
-import ApiError from './ApiError.js';
-import config from '../../config/config.js';
-import logger from '../logger/logger.js';
+import ApiError from '@/lib/errors/ApiError.js';
+import config from '@/config/config.js';
+import logger from '@/lib/logger/logger.js';
 
 describe('Error middlewares', () => {
   describe('Error converter', () => {

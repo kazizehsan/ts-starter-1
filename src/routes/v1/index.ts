@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
-import docsRoute from './swagger.route.js';
-import config from '../../config/config.js';
+import docsRoute from '@/routes/v1/swagger.route.js';
+import config from '@/config/config.js';
 
 const router = express.Router();
 

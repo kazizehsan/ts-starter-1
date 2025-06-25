@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { NewCreatedUser } from './user.interfaces.js';
-import User from './user.model.js';
+import { NewCreatedUser } from '@/modules/user/user.interfaces.js';
+import User from '@/modules/user/user.model.js';
 
 describe('User model', () => {
   describe('User validation', () => {

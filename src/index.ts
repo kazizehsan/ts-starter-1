@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import app from './app.js';
-import config from './config/config.js';
-import logger from './modules/logger/logger.js';
+import app from '@/app.js';
+import config from '@/config/config.js';
+import logger from '@/lib/logger/logger.js';
 
 let server: any;
 mongoose.connect(config.mongoose.url).then(() => {

@@ -4,13 +4,13 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import httpStatus from 'http-status';
 import moment from 'moment';
-import config from '../../config/config.js';
-import tokenTypes from '../token/token.types.js';
-import * as tokenService from '../token/token.service.js';
-import app from '../../app.js';
-import setupTestDB from '../test/setupTestDB.js';
-import User from './user.model.js';
-import { NewCreatedUser } from './user.interfaces.js';
+import config from '@/config/config.js';
+import tokenTypes from '@/modules/token/token.types.js';
+import * as tokenService from '@/modules/token/token.service.js';
+import app from '@/app.js';
+import setupTestDB from '@/lib/test/setupTestDB.js';
+import User from '@/modules/user/user.model.js';
+import { NewCreatedUser } from '@/modules/user/user.interfaces.js';
 
 setupTestDB();
 

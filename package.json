@@ -9,10 +9,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "compile": "tsoa spec-and-routes && tsc --build",
+    "compile": "tsoa spec-and-routes && tsc --build && tsc-alias",
     "postcompile": "cp package*json dist/",
     "tsoa:watch": "onchange 'src/**/*.ts' -e 'src/routes/routes.ts' -e 'src/specs/*.json' -- tsoa spec-and-routes",
-    "compile:watch": "onchange 'src/routes/routes.ts' -- tsc --build",
+    "compile:watch": "onchange 'src/routes/routes.ts' -- tsc --build && tsc-alias",
     "pre:dev": "cross-env NODE_ENV=development nodemon --watch dist dist/index.js",
     "dev": "concurrently --kill-others \"yarn tsoa:watch\" \"yarn compile:watch\" \"yarn pre:dev\"",
     "create-bucket": "aws s3 mb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
@@ -84,6 +84,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^4.4.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-security": "^1.4.0",
@@ -94,6 +95,7 @@
     "onchange": "^7.1.0",
     "prettier": "^2.5.1",
     "supertest": "^6.1.6",
+    "tsc-alias": "^1.8.16",
     "typescript": "^4.9.5",
     "vitest": "^2.1.1"
   },

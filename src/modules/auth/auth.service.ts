@@ -1,12 +1,12 @@
 import httpStatus from 'http-status';
-import Token, { ITokenDoc } from '../token/token.model.js';
-import ApiError from '../errors/ApiError.js';
-import tokenTypes from '../token/token.types.js';
-import { getUserByEmail, getUserById, updateUserById } from '../user/user.service.js';
-import { generateAuthTokens, verifyToken } from '../token/token.service.js';
-import { IUserWithTokens } from './auth.interfaces.js';
-import { IUserBaseModel } from '../user/user.interfaces.js';
-import { IUserDoc } from '../user/user.model.js';
+import Token, { ITokenDoc } from '@/modules/token/token.model.js';
+import ApiError from '@/lib/errors/ApiError.js';
+import tokenTypes from '@/modules/token/token.types.js';
+import { getUserByEmail, getUserById, updateUserById } from '@/modules/user/user.service.js';
+import { generateAuthTokens, verifyToken } from '@/modules/token/token.service.js';
+import { IUserWithTokens } from '@/modules/auth/auth.interfaces.js';
+import { IUserBaseModel } from '@/modules/user/user.interfaces.js';
+import { IUserDoc } from '@/modules/user/user.model.js';
 
 /**
  * Login with username and password

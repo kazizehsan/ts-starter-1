@@ -1,4 +1,4 @@
-import { ROLES } from '../../config/roles.js';
+import { ROLES } from '@/config/roles.js';
 
 type ROLE = keyof typeof ROLES;
 

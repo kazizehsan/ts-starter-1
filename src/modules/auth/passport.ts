@@ -1,8 +1,8 @@
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import { JwtPayload } from 'jsonwebtoken';
-import tokenTypes from '../token/token.types.js';
-import config from '../../config/config.js';
-import User from '../user/user.model.js';
+import tokenTypes from '@/modules/token/token.types.js';
+import config from '@/config/config.js';
+import User from '@/modules/user/user.model.js';
 
 export interface IPayload extends JwtPayload {
   sub: string;

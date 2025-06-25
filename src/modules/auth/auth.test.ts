@@ -6,16 +6,16 @@ import httpMocks from 'node-mocks-http';
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
 import { vi } from 'vitest';
-import app from '../../app.js';
-import setupTestDB from '../test/setupTestDB.js';
-import User from '../user/user.model.js';
-import config from '../../config/config.js';
-import { NewRegisteredUser } from '../user/user.interfaces.js';
-import * as tokenService from '../token/token.service.js';
-import tokenTypes from '../token/token.types.js';
-import Token from '../token/token.model.js';
-import authMiddleware from './auth.middleware.js';
-import ApiError from '../errors/ApiError.js';
+import app from '@/app.js';
+import setupTestDB from '@/lib/test/setupTestDB.js';
+import User from '@/modules/user/user.model.js';
+import config from '@/config/config.js';
+import { NewRegisteredUser } from '@/modules/user/user.interfaces.js';
+import * as tokenService from '@/modules/token/token.service.js';
+import tokenTypes from '@/modules/token/token.types.js';
+import Token from '@/modules/token/token.model.js';
+import authMiddleware from '@/modules/auth/auth.middleware.js';
+import ApiError from '@/lib/errors/ApiError.js';
 
 setupTestDB();
 

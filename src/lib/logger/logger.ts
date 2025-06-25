@@ -1,5 +1,5 @@
 import winston from 'winston';
-import config from '../../config/config.js';
+import config from '@/config/config.js';
 
 interface LoggingInfo {
   level: string;

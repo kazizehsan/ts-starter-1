@@ -6,13 +6,13 @@ import compression from 'compression';
 import cors from 'cors';
 import passport from 'passport';
 import httpStatus from 'http-status';
-import config from './config/config.js';
-import { morgan } from './modules/logger/index.js';
-import { jwtStrategy } from './modules/auth/index.js';
-import { authLimiter } from './modules/utils/index.js';
-import { ApiError, errorConverter, errorHandler } from './modules/errors/index.js';
-import routes from './routes/v1/index.js';
-import { RegisterRoutes } from './routes/routes.js';
+import config from '@/config/config.js';
+import { morgan } from '@/lib/logger/index.js';
+import { jwtStrategy } from '@/modules/auth/index.js';
+import { authLimiter } from '@/lib/utils/index.js';
+import { ApiError, errorConverter, errorHandler } from '@/lib/errors/index.js';
+import routes from '@/routes/v1/index.js';
+import { RegisterRoutes } from '@/routes/routes.js';
 
 const app: Express = express();
 

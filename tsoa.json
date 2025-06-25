@@ -2,6 +2,12 @@
   "entryFile": "src/index.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/**/*.controller.ts"],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
   "spec": {
     "outputDirectory": "src/specs",
     "specVersion": 3,
@@ -17,6 +23,6 @@
     "routesDir": "src/routes",
     "esm": true,
     "authenticationModule": "src/modules/auth/auth.tsoa.ts",
-    "iocModule": "src/modules/utils/ioc.ts"
+    "iocModule": "src/lib/utils/ioc.ts"
   }
 }
