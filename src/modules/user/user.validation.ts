@@ -3,7 +3,7 @@ import { password, objectId } from '../validate/custom.validation.js';
 import { NewCreatedUser } from './user.interfaces.js';
 import { ROLES } from '../../config/roles.js';
 
-const createUserBody: Record<keyof NewCreatedUser, any> = {
+const createUserBody: Record<keyof NewCreatedUser, Joi.Schema> = {
   email: Joi.string().required().email(),
   password: Joi.string().required().custom(password),
   name: Joi.string().required(),

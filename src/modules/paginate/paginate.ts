@@ -70,12 +70,12 @@ const paginate = <T extends Document>(schema: Schema<T>): void => {
     let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit).select(project);
 
     if (options.populate) {
-      options.populate.split(',').forEach((populateOption: any) => {
+      options.populate.split(',').forEach((populateOption: string) => {
         docsPromise = docsPromise.populate(
           populateOption
             .split('.')
             .reverse()
-            .reduce((a: string, b: string) => ({ path: b, populate: a }))
+            .reduce((a: any, b: string) => ({ path: b, populate: a }), null)
         );
       });
     }

@@ -61,7 +61,7 @@ export const refreshAuth = async (refreshToken: string): Promise<IUserWithTokens
  * @param {string} newPassword
  * @returns {Promise<void>}
  */
-export const resetPassword = async (resetPasswordToken: any, newPassword: string): Promise<void> => {
+export const resetPassword = async (resetPasswordToken: string, newPassword: string): Promise<void> => {
   try {
     const resetPasswordTokenDoc = await verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
     const user = await getUserById(resetPasswordTokenDoc.user);
@@ -80,7 +80,7 @@ export const resetPassword = async (resetPasswordToken: any, newPassword: string
  * @param {string} verifyEmailToken
  * @returns {Promise<IUserBaseModel | null>}
  */
-export const verifyEmail = async (verifyEmailToken: any): Promise<IUserBaseModel | null> => {
+export const verifyEmail = async (verifyEmailToken: string): Promise<IUserBaseModel | null> => {
   try {
     const verifyEmailTokenDoc = await verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
     const user = await getUserById(verifyEmailTokenDoc.user);

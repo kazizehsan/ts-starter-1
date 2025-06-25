@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Document } from 'mongoose';
+import { Document, Schema, ToObjectOptions, SchemaType } from 'mongoose';
 
 /**
  * A mongoose schema plugin which applies the following in the toJSON transform call:
@@ -16,17 +16,33 @@ const deleteAtPath = (obj: any, path: any, index: number) => {
   deleteAtPath(obj[path[index]], path, index + 1);
 };
 
-const toJSON = (schema: any) => {
-  let transform: Function;
-  if (schema.options.toJSON && schema.options.toJSON.transform) {
-    transform = schema.options.toJSON.transform;
+const toJSON = <T extends Document>(schema: Schema<T>): void => {
+  // Type assertion to access options and paths safely
+  const schemaWithOptions = schema as Schema<T> & {
+    options: {
+      toJSON?: ToObjectOptions;
+      [key: string]: any;
+    };
+    paths: {
+      [key: string]: SchemaType & {
+        options?: {
+          private?: boolean;
+          [key: string]: any;
+        };
+      };
+    };
+  };
+  let transform: ToObjectOptions['transform'];
+  if (schemaWithOptions.options.toJSON && schemaWithOptions.options.toJSON.transform) {
+    transform = schemaWithOptions.options.toJSON.transform;
   }
 
   // eslint-disable-next-line no-param-reassign
-  schema.options.toJSON = Object.assign(schema.options.toJSON || {}, {
-    transform(doc: Document, ret: any, options: Record<string, any>) {
-      Object.keys(schema.paths).forEach((path) => {
-        if (schema.paths[path].options && schema.paths[path].options.private) {
+  schemaWithOptions.options.toJSON = Object.assign(schemaWithOptions.options.toJSON || {}, {
+    transform(doc: any, ret: any, options: any) {
+      Object.keys(schemaWithOptions.paths).forEach((path) => {
+        const schemaPath = schemaWithOptions.paths[path];
+        if (schemaPath?.options?.private) {
           deleteAtPath(ret, path.split('.'), 0);
         }
       });
@@ -41,7 +57,7 @@ const toJSON = (schema: any) => {
       delete ret.createdAt;
       // eslint-disable-next-line no-param-reassign
       delete ret.updatedAt;
-      if (transform) {
+      if (transform && typeof transform === 'function') {
         return transform(doc, ret, options);
       }
     },
