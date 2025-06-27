@@ -14,7 +14,7 @@
     "tsoa:watch": "onchange 'src/**/*.ts' -e 'src/routes/routes.ts' -e 'src/specs/*.json' -- tsoa spec-and-routes",
     "compile:watch": "onchange 'src/routes/routes.ts' -- tsc --build && tsc-alias",
     "pre:dev": "cross-env NODE_ENV=development nodemon --watch dist dist/index.js",
-    "dev": "concurrently --kill-others \"yarn tsoa:watch\" \"yarn compile:watch\" \"yarn pre:dev\"",
+    "dev": "yarn compile && concurrently --kill-others \"yarn tsoa:watch\" \"yarn compile:watch\" \"yarn pre:dev\"",
     "create-bucket": "aws s3 mb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
     "delete-bucket": "aws s3 rb s3://$npm_package_config_s3BucketName --region $npm_package_config_region",
     "delete-stack": "aws cloudformation delete-stack --stack-name $npm_package_config_cloudFormationStackName --region $npm_package_config_region",
