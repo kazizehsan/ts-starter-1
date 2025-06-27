@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import httpStatus from 'http-status';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import config from '@/config/config.js';
 import tokenTypes from '@/modules/token/token.types.js';
 import * as tokenService from '@/modules/token/token.service.js';
@@ -17,7 +17,7 @@ setupTestDB();
 const password = 'password1';
 const salt = bcrypt.genSaltSync(8);
 const hashedPassword = bcrypt.hashSync(password, salt);
-const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+const accessTokenExpires = DateTime.now().plus({ minutes: Number(config.jwt.accessExpirationMinutes) });
 
 const userOne = {
   _id: new mongoose.Types.ObjectId(),

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
 import config from '@/config/config.js';
@@ -8,7 +8,7 @@ import Token from '@/modules/token/token.model.js';
 import * as tokenService from '@/modules/token/token.service.js';
 
 const password = 'password1';
-const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+const accessTokenExpires = DateTime.now().plus({ minutes: Number(config.jwt.accessExpirationMinutes) });
 
 const userOne = {
   _id: new mongoose.Types.ObjectId(),
@@ -22,14 +22,14 @@ const userOne = {
 const userOneAccessToken = tokenService.generateToken(userOne._id.toString(), accessTokenExpires, tokenTypes.ACCESS);
 
 describe('Token Model', () => {
-  const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
+  const refreshTokenExpires = DateTime.now().plus({ days: Number(config.jwt.refreshExpirationDays) });
   let newToken: NewToken;
   beforeEach(() => {
     newToken = {
       token: userOneAccessToken,
       user: userOne._id.toHexString(),
       type: tokenTypes.REFRESH,
-      expires: refreshTokenExpires.toDate(),
+      expires: refreshTokenExpires.toJSDate(),
     };
   });
 

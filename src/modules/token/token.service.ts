@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import moment, { Moment } from 'moment';
+import { DateTime } from 'luxon';
 import httpStatus from 'http-status';
 import config from '@/config/config.js';
 import Token from '@/modules/token/token.model.js';
@@ -13,16 +13,21 @@ import { IPayload } from '@/modules/auth/passport.js';
 /**
  * Generate token
  * @param {string} userId
- * @param {Moment} expires
+ * @param {DateTime} expires
  * @param {string} type
  * @param {string} [secret]
  * @returns {string}
  */
-export const generateToken = (userId: string, expires: Moment, type: string, secret: string = config.jwt.secret): string => {
+export const generateToken = (
+  userId: string,
+  expires: DateTime,
+  type: string,
+  secret: string = config.jwt.secret
+): string => {
   const payload: IPayload = {
     sub: userId,
-    iat: moment().unix(),
-    exp: expires.unix(),
+    iat: Math.floor(DateTime.now().toSeconds()),
+    exp: Math.floor(expires.toSeconds()),
     type,
   };
   return jwt.sign(payload, secret);
@@ -32,7 +37,7 @@ export const generateToken = (userId: string, expires: Moment, type: string, sec
  * Save a token
  * @param {string} token
  * @param {string} userId
- * @param {Moment} expires
+ * @param {DateTime} expires
  * @param {string} type
  * @param {boolean} [blacklisted]
  * @returns {Promise<ITokenBaseModel>}
@@ -40,14 +45,14 @@ export const generateToken = (userId: string, expires: Moment, type: string, sec
 export const saveToken = async (
   token: string,
   userId: string,
-  expires: Moment,
+  expires: DateTime,
   type: string,
   blacklisted: boolean = false
 ): Promise<ITokenBaseModel> => {
   const tokenDoc = await Token.create({
     token,
     user: userId,
-    expires: expires.toDate(),
+    expires: expires.toJSDate(),
     type,
     blacklisted,
   });
@@ -83,21 +88,21 @@ export const verifyToken = async (token: string, type: string): Promise<ITokenBa
  * @returns {Promise<AccessAndRefreshTokens>}
  */
 export const generateAuthTokens = async (user: IUserBaseModel): Promise<AccessAndRefreshTokens> => {
-  const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+  const accessTokenExpires = DateTime.now().plus({ minutes: Number(config.jwt.accessExpirationMinutes) });
   const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
-  const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
+  const refreshTokenExpires = DateTime.now().plus({ days: Number(config.jwt.refreshExpirationDays) });
   const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
   await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {
       token: accessToken,
-      expires: accessTokenExpires.toDate(),
+      expires: accessTokenExpires.toJSDate(),
     },
     refresh: {
       token: refreshToken,
-      expires: refreshTokenExpires.toDate(),
+      expires: refreshTokenExpires.toJSDate(),
     },
   };
 };
@@ -112,7 +117,7 @@ export const generateResetPasswordToken = async (email: string): Promise<string>
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
-  const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
+  const expires = DateTime.now().plus({ minutes: Number(config.jwt.resetPasswordExpirationMinutes) });
   const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
   await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
   return resetPasswordToken;
@@ -124,7 +129,7 @@ export const generateResetPasswordToken = async (email: string): Promise<string>
  * @returns {Promise<string>}
  */
 export const generateVerifyEmailToken = async (user: IUserBaseModel): Promise<string> => {
-  const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
+  const expires = DateTime.now().plus({ minutes: Number(config.jwt.verifyEmailExpirationMinutes) });
   const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
   return verifyEmailToken;
