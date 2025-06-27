@@ -115,10 +115,10 @@ Make sure you have MongoDB running on a cloud.
 * region
 * cloudFormationStackName
 
-Create AWS Secrets Manager secrets like so:
+Create an AWS Secrets Manager secret called 'ts-starter-1/prod' with the following keys and appropriate values:
 
-* ts-starter-1/prod/JWT:secret
-* ts-starter-1/prod/MONGODB_URL:url
+* JWT_SECRET
+* MONGODB_URL
 
 If you change the prefix in the secrets above from `ts-starter-1` to something else, then update them in `sam-template.yaml` as well.
 

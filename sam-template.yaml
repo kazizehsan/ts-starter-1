@@ -21,11 +21,13 @@ Resources:
   ExpressLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Architectures:
+        - arm64
       CodeUri: ./dist
       PackageType: Zip
       Runtime: nodejs20.x
       Handler: lambda.handler
-      MemorySize: 1024
+      MemorySize: 512
       Timeout: 30
       Events:
         ProxyApiRoot:
@@ -35,8 +37,8 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: production
-          JWT_SECRET: "{{resolve:secretsmanager:ts-starter-1/prod/JWT:SecretString:secret}}"
-          MONGODB_URL: "{{resolve:secretsmanager:ts-starter-1/prod/MONGODB_URL:SecretString:url}}"
+          JWT_SECRET: "{{resolve:secretsmanager:ts-starter-1/prod:SecretString:JWT_SECRET}}"
+          MONGODB_URL: "{{resolve:secretsmanager:ts-starter-1/prod:SecretString:MONGODB_URL}}"
 
   MyApiCertificate:
     Type: 'AWS::CertificateManager::Certificate'
