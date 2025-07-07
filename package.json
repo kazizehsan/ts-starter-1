@@ -1,6 +1,6 @@
 {
   "name": "@kazize/create-ts-starter-1",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "TypeScript Express.js backend boilerplate on AWS Lambda",
   "main": "dist/index.js",
   "bin": "bin/createStarter.js",
